@@ -56,7 +56,7 @@ function LoginPage() {
   return (
     <div className="atmosphere grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
       {/* Brand panel */}
-      <section className="relative hidden flex-col justify-between overflow-hidden border-r border-hairline p-12 lg:flex">
+      <section className="relative hidden flex-col justify-center gap-14 overflow-hidden border-r border-hairline p-12 lg:flex">
         <Brand size="lg" />
         <div className="max-w-lg">
           <p className="type-label text-primary">Multi-school transport platform</p>
