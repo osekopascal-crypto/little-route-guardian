@@ -16,7 +16,7 @@ export function AppShell({
   density = "comfortable",
 }: {
   title: string;
-  greetingLine?: string;
+  greetingLine?: string | undefined;
   children: React.ReactNode;
   density?: "comfortable" | "roomy";
 }) {
