@@ -476,7 +476,7 @@ function StudentDialog({
             </Field>
             <Field label="Gender" htmlFor="gender">
               <Select
-                value={form.gender ?? ""}
+                value={form.gender || undefined}
                 onValueChange={(v) => set("gender", v)}
               >
                 <SelectTrigger id="gender" className="min-h-11">
@@ -639,7 +639,7 @@ function GuardianDialog({
             </p>
           ) : (
             <>
-              <Select value={guardianId} onValueChange={setGuardianId}>
+              <Select value={guardianId || undefined} onValueChange={setGuardianId}>
                 <SelectTrigger className="min-h-11" aria-label="Parent account">
                   <SelectValue placeholder="Choose a parent" />
                 </SelectTrigger>
