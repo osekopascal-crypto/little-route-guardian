@@ -97,6 +97,117 @@ export type Database = {
         }
         Relationships: []
       }
+      student_guardians: {
+        Row: {
+          created_at: string
+          guardian_id: string
+          id: string
+          is_primary: boolean
+          relationship: string
+          school_id: string
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          guardian_id: string
+          id?: string
+          is_primary?: boolean
+          relationship?: string
+          school_id: string
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          guardian_id?: string
+          id?: string
+          is_primary?: boolean
+          relationship?: string
+          school_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_guardians_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_guardians_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_guardians_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          admission_no: string
+          class_name: string | null
+          created_at: string
+          date_of_birth: string | null
+          first_name: string
+          gender: string | null
+          grade_level: string | null
+          home_address: string | null
+          id: string
+          last_name: string
+          pickup_notes: string | null
+          school_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admission_no: string
+          class_name?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          first_name: string
+          gender?: string | null
+          grade_level?: string | null
+          home_address?: string | null
+          id?: string
+          last_name: string
+          pickup_notes?: string | null
+          school_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admission_no?: string
+          class_name?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          first_name?: string
+          gender?: string | null
+          grade_level?: string | null
+          home_address?: string | null
+          id?: string
+          last_name?: string
+          pickup_notes?: string | null
+          school_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -104,6 +215,7 @@ export type Database = {
     Functions: {
       get_user_role: { Args: never; Returns: string }
       get_user_school_id: { Args: never; Returns: string }
+      is_my_child: { Args: { _student_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
