@@ -165,20 +165,37 @@
   /* Effects */
   --gradient-primary: linear-gradient(
     135deg,
-    oklch(0.58 0.2 24) 0%,
-    oklch(0.44 0.17 15) 100%
+    oklch(0.62 0.21 28) 0%,
+    oklch(0.52 0.2 12) 48%,
+    oklch(0.4 0.16 350) 100%
   );
   --gradient-surface: linear-gradient(
     160deg,
-    oklch(1 0 0 / 0.06) 0%,
-    oklch(1 0 0 / 0.015) 55%,
-    oklch(0 0 0 / 0.05) 100%
+    oklch(1 0 0 / 0.08) 0%,
+    oklch(1 0 0 / 0.02) 55%,
+    oklch(0 0 0 / 0.06) 100%
+  );
+  --gradient-holo: linear-gradient(
+    100deg,
+    oklch(0.92 0.03 250) 0%,
+    oklch(0.78 0.16 24) 34%,
+    oklch(0.86 0.09 60) 52%,
+    oklch(0.76 0.11 240) 74%,
+    oklch(0.95 0.02 250) 100%
+  );
+  --gradient-chrome: linear-gradient(
+    145deg,
+    oklch(1 0 0 / 0.22) 0%,
+    oklch(1 0 0 / 0.04) 38%,
+    oklch(0 0 0 / 0.12) 100%
   );
   --atmosphere:
-    radial-gradient(60rem 34rem at 12% -8%, oklch(0.55 0.19 21 / 0.22), transparent 65%),
-    radial-gradient(52rem 30rem at 92% 4%, oklch(0.55 0.1 245 / 0.16), transparent 62%),
-    radial-gradient(46rem 32rem at 50% 108%, oklch(0.5 0.14 18 / 0.14), transparent 68%);
+    radial-gradient(58rem 34rem at 10% -10%, oklch(0.6 0.2 22 / 0.3), transparent 64%),
+    radial-gradient(50rem 30rem at 94% 2%, oklch(0.58 0.13 258 / 0.24), transparent 62%),
+    radial-gradient(42rem 28rem at 78% 88%, oklch(0.6 0.14 330 / 0.16), transparent 66%),
+    radial-gradient(46rem 32rem at 34% 112%, oklch(0.5 0.15 18 / 0.18), transparent 68%);
 }
+
 
 @layer base {
   * {
