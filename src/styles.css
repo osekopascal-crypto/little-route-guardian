@@ -294,12 +294,14 @@
 }
 
 @utility type-kpi {
+  font-family: var(--font-display);
   font-size: clamp(2rem, 4.5vw, 2.75rem);
   line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  letter-spacing: -0.045em;
   font-variant-numeric: tabular-nums;
 }
+
 
 @utility type-nav {
   font-size: 0.9062rem;
