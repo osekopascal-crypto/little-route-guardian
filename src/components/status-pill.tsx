@@ -3,19 +3,19 @@ import { cn } from "@/lib/utils";
 type Tone = "neutral" | "success" | "warning" | "error" | "info" | "primary";
 
 const tones: Record<Tone, string> = {
-  neutral: "bg-muted text-muted-foreground border-border",
-  success: "bg-success/12 text-success border-success/30",
+  neutral: "bg-surface-1/80 text-muted-foreground border-hairline",
+  success: "bg-success/10 text-success border-success/25",
   warning: "bg-warning/12 text-warning border-warning/30",
-  error: "bg-destructive/12 text-destructive border-destructive/35",
-  info: "bg-info/12 text-info border-info/30",
-  primary: "bg-primary/15 text-primary border-primary/35",
+  error: "bg-destructive/10 text-destructive border-destructive/30",
+  info: "bg-info/8 text-info border-info/20",
+  primary: "chip-gradient text-primary-foreground border-transparent",
 };
 
 const shapes: Record<Tone, string> = {
   neutral: "rounded-full",
   success: "rounded-full",
-  warning: "rounded-[4px]",
-  error: "rounded-[4px]",
+  warning: "rounded-[5px]",
+  error: "rounded-[5px]",
   info: "rounded-full",
   primary: "rounded-full",
 };
@@ -38,7 +38,7 @@ export function StatusPill({
   return (
     <span
       className={cn(
-        "type-label inline-flex items-center gap-2 border px-2.5 py-1.5",
+        "type-label inline-flex items-center gap-2 border px-2.5 py-1.5 backdrop-blur-sm",
         tones[tone],
         shapes[tone],
         className,
