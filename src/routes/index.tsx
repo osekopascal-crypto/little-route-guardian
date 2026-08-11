@@ -3,6 +3,7 @@ import { AlertCircle, ArrowRight, Loader2, Lock, Mail, ShieldCheck } from "lucid
 import { useEffect, useState } from "react";
 
 import { Brand } from "@/components/brand";
+import { Environment } from "@/components/environment";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
