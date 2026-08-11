@@ -4,6 +4,7 @@ import { LayoutDashboard, LogOut, ShieldCheck, Users } from "lucide-react";
 import { useState } from "react";
 
 import { Brand } from "@/components/brand";
+import { Environment } from "@/components/environment";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { roleLabel, useAuth } from "@/lib/auth";
@@ -54,24 +55,15 @@ export function AppShell({
 
   return (
     <div className="atmosphere relative min-h-screen overflow-x-hidden">
-      {/* Ambient depth */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="orb left-[-8rem] top-[-6rem] size-[26rem] bg-primary/25" />
-        <div
-          className="orb right-[-10rem] top-[6rem] size-[22rem] bg-accent/20"
-          style={{ animationDelay: "-6s" }}
-        />
-      </div>
+      <Environment />
 
-      <header className="sticky top-0 z-20 border-b border-hairline bg-background/60 backdrop-blur-2xl">
+      <header className="glass-nav sticky top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Brand size="sm" />
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden text-right sm:block">
-              <p className="type-caption font-semibold text-foreground">
-                {profile?.full_name}
-              </p>
-              <p className="type-caption text-muted-foreground">
+              <p className="type-caption font-semibold text-foreground">{profile?.full_name}</p>
+              <p className="type-meta text-muted-foreground">
                 {profile ? roleLabel[profile.role] : ""}
               </p>
             </div>
@@ -104,7 +96,7 @@ export function AppShell({
               <Link
                 key={item.to}
                 to={item.to}
-                className="type-nav glass-soft flex items-center gap-2 whitespace-nowrap px-3.5 py-2 text-muted-foreground transition-colors hover:text-foreground data-[status=active]:chip-gradient data-[status=active]:text-primary-foreground"
+                className="type-nav glass-soft flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-muted-foreground transition-all duration-300 hover:text-foreground data-[status=active]:chip-gradient data-[status=active]:text-primary-foreground"
                 activeOptions={{ exact: true }}
               >
                 <item.icon className="size-4" aria-hidden="true" />
@@ -118,12 +110,15 @@ export function AppShell({
       <main
         className={cn(
           "relative mx-auto max-w-6xl px-4 pb-24 sm:px-6",
-          density === "roomy" ? "pt-8 sm:pt-12" : "pt-6 sm:pt-10",
+          density === "roomy" ? "pt-8 sm:pt-12" : "pt-8 sm:pt-12",
         )}
       >
         <div className="animate-fade">
           <div className="flex flex-wrap items-center gap-2.5">
-            <StatusPill tone="primary" icon={<ShieldCheck className="size-3.5" aria-hidden="true" />}>
+            <StatusPill
+              tone="primary"
+              icon={<ShieldCheck className="size-3.5" aria-hidden="true" />}
+            >
               {profile ? roleLabel[profile.role] : "Account"}
             </StatusPill>
             {school && (
@@ -132,17 +127,18 @@ export function AppShell({
               </StatusPill>
             )}
           </div>
-          <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+          <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
             <div className="min-w-0">
               <h1 className="type-h1 text-chrome">{title}</h1>
               {greetingLine && (
-                <p className="type-body mt-2 text-muted-foreground">{greetingLine}</p>
+                <p className="type-body mt-2.5 max-w-xl text-muted-foreground">{greetingLine}</p>
               )}
+              <div aria-hidden="true" className="route-line mt-5 w-40 opacity-80" />
             </div>
             {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
           </div>
         </div>
-        <div className="mt-8">{children}</div>
+        <div className="mt-10">{children}</div>
       </main>
     </div>
   );
