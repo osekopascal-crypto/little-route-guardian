@@ -3,6 +3,7 @@ import { AlertCircle, ArrowRight, Loader2, Lock, Mail, ShieldCheck } from "lucid
 import { useEffect, useState } from "react";
 
 import { Brand } from "@/components/brand";
+import { Environment } from "@/components/environment";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,53 +55,56 @@ function LoginPage() {
   const busy = submitting || state === "loading";
 
   return (
-    <div className="atmosphere grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+    <div className="atmosphere relative grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+      <Environment />
+
       {/* Brand panel */}
-      <section className="relative hidden flex-col justify-center gap-14 overflow-hidden border-r border-hairline p-12 lg:flex">
+      <section className="relative hidden flex-col justify-center gap-14 overflow-hidden p-12 lg:flex xl:p-16">
         <Brand size="lg" />
         <div className="max-w-lg">
-          <p className="type-label text-primary">Multi-school transport platform</p>
-          <h2 className="type-display mt-5 text-foreground">
+          <p className="type-label text-primary">Premium school mobility platform</p>
+          <h2 className="type-display mt-5 text-chrome">
             Every child accounted for, every journey.
           </h2>
-          <p className="type-body mt-5 text-muted-foreground">
-            One secure platform connecting school administrators, bus attendants and parents —
-            built so each school's data stays strictly its own.
+          <p className="type-body mt-6 text-muted-foreground">
+            One calm, secure operations layer connecting school administrators, bus attendants
+            and parents — built so each school's data stays strictly its own.
           </p>
+          <div aria-hidden="true" className="route-line mt-8 w-56" />
         </div>
-        <ul className="grid gap-3">
+        <ul className="grid gap-2.5">
           {[
             "School-isolated data by design",
             "Role-aware access for admins, attendants and parents",
             "Calm, real-time reassurance for families",
           ].map((item) => (
-            <li key={item} className="type-body-sm flex items-center gap-3 text-muted-foreground">
-              <ShieldCheck className="size-4 shrink-0 text-accent" aria-hidden="true" />
+            <li
+              key={item}
+              className="glass-soft type-body-sm flex items-center gap-3 px-4 py-3 text-foreground"
+            >
+              <ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />
               {item}
             </li>
           ))}
         </ul>
-        <div
-          aria-hidden="true"
-          className="route-motif pointer-events-none absolute -right-24 top-1/2 size-[28rem] -translate-y-1/2 rounded-full opacity-30 blur-[1px]"
-        />
       </section>
 
       {/* Form panel */}
-      <section className="flex items-center justify-center px-4 py-12 sm:px-8">
+      <section className="relative flex items-center justify-center px-4 py-12 sm:px-8">
         <div className="animate-rise w-full max-w-sm">
           <div className="lg:hidden">
             <Brand size="md" />
           </div>
 
-          <div className="mt-8 lg:mt-0">
-            <h1 className="type-h1 text-foreground">Welcome back</h1>
-            <p className="type-body-sm mt-2 text-muted-foreground">
+          <div className="mt-9 lg:mt-0">
+            <h1 className="type-h1 text-chrome">Welcome back</h1>
+            <p className="type-body-sm mt-2.5 text-muted-foreground">
               Sign in to continue to your school transport workspace.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="surface-2 mt-6 space-y-5 rounded-3xl p-6">
+          <form onSubmit={handleSubmit} className="glass edge-lit mt-7 space-y-5 p-6 sm:p-7">
+
             <div className="space-y-2">
               <Label htmlFor="email" className="type-label text-muted-foreground">
                 Email

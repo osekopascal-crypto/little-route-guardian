@@ -71,11 +71,14 @@ function AdminDashboard() {
         <h2 id="kpis" className="sr-only">
           Transport overview
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 lg:grid-cols-4">
           <KpiCard
-            label="Pupils"
+            className="lg:col-span-2"
+            emphasis="primary"
+            live
+            label="Pupils on the register"
             value={dash(list.length)}
-            hint={`${dash(active)} active on the register`}
+            hint={`${dash(active)} active · isolated to ${school?.code ?? "your school"}`}
             icon={<Users className="size-4" />}
             delay={0}
           />
@@ -84,23 +87,27 @@ function AdminDashboard() {
             value={parents.isLoading ? "—" : String(parents.data?.length ?? 0)}
             hint={`${unlinked.length} pupils await a family link`}
             icon={<UserRound className="size-4" />}
-            delay={60}
+            delay={80}
           />
           <KpiCard
+            emphasis="quiet"
             label="Routes"
             value="—"
             hint="Routes & stops arrive in Phase 3"
             icon={<Map className="size-4" />}
-            delay={120}
+            delay={140}
           />
           <KpiCard
+            emphasis="quiet"
+            className="lg:col-span-2"
             label="Today's Trips"
             value="—"
             hint="Live trips arrive in Phase 4"
             icon={<CalendarClock className="size-4" />}
-            delay={180}
+            delay={200}
           />
         </div>
+
       </section>
 
       <section className="mt-8 grid gap-4 lg:grid-cols-3" aria-labelledby="register">
