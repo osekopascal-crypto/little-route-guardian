@@ -54,22 +54,24 @@ export function AppShell({
   const nav = profile ? navByRole[profile.role] : [];
 
   return (
-    <div className="atmosphere relative min-h-screen overflow-x-hidden">
+    <div className="atmosphere relative flex min-h-screen flex-col overflow-x-hidden">
       <Environment />
 
-      <header className="glass-nav sticky top-0 z-20">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <header className="glass-nav crest sticky top-0 z-20">
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:px-6">
           <Brand size="sm" />
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden text-right sm:block">
-              <p className="type-caption font-semibold text-foreground">{profile?.full_name}</p>
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <div className="hidden min-w-0 text-right sm:block">
+              <p className="type-caption truncate font-semibold text-foreground">
+                {profile?.full_name}
+              </p>
               <p className="type-meta text-muted-foreground">
                 {profile ? roleLabel[profile.role] : ""}
               </p>
             </div>
             <div
               aria-hidden="true"
-              className="chip-gradient grid size-9 place-items-center rounded-full text-xs font-bold"
+              className="chip-gradient grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold"
             >
               {initials || "—"}
             </div>
@@ -78,7 +80,7 @@ export function AppShell({
               size="sm"
               onClick={handleSignOut}
               disabled={signingOut}
-              className="min-h-9 gap-2"
+              className="min-h-9 shrink-0 gap-2"
             >
               <LogOut className="size-4" aria-hidden="true" />
               <span className="hidden sm:inline">{signingOut ? "Signing out…" : "Sign out"}</span>
@@ -109,8 +111,8 @@ export function AppShell({
 
       <main
         className={cn(
-          "relative mx-auto max-w-6xl px-4 pb-24 sm:px-6",
-          density === "roomy" ? "pt-8 sm:pt-12" : "pt-8 sm:pt-12",
+          "relative mx-auto w-full max-w-6xl flex-1 px-4 pb-16 sm:px-6",
+          density === "roomy" ? "pt-9 sm:pt-14" : "pt-8 sm:pt-12",
         )}
       >
         <div className="animate-fade">
@@ -127,7 +129,7 @@ export function AppShell({
               </StatusPill>
             )}
           </div>
-          <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
+          <div className="mt-5 grid gap-4 sm:flex sm:flex-wrap sm:items-end sm:justify-between">
             <div className="min-w-0">
               <h1 className="type-h1 text-chrome">{title}</h1>
               {greetingLine && (
@@ -140,6 +142,17 @@ export function AppShell({
         </div>
         <div className="mt-10">{children}</div>
       </main>
+
+      <footer className="relative mx-auto w-full max-w-6xl px-4 pb-10 pt-6 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-5">
+          <p className="type-meta text-muted-foreground">
+            School Transport · Safe journeys, every day
+          </p>
+          <p className="type-meta text-muted-foreground">
+            Powered by <span className="font-display font-semibold text-foreground">Pasco Labs</span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
