@@ -12,8 +12,9 @@
  */
 
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Manrope", ui-sans-serif, sans-serif;
+
 
   --radius-sm: calc(var(--radius) - 6px);
   --radius-md: calc(var(--radius) - 3px);
@@ -79,12 +80,21 @@
   --shadow-level-2: 0 12px 30px -16px oklch(0.24 0.02 70 / 0.22);
   --shadow-level-3: 0 30px 70px -28px oklch(0.24 0.02 70 / 0.3);
   --shadow-glow-primary: 0 14px 38px -14px oklch(0.78 0.16 80 / 0.55);
+  --shadow-soft: 0 2px 6px -2px oklch(0.24 0.02 70 / 0.08);
+  --shadow-elevated: 0 18px 44px -22px oklch(0.24 0.02 70 / 0.26);
+  --shadow-floating: 0 40px 90px -38px oklch(0.24 0.02 70 / 0.34);
 
   --tracking-tightest: -0.03em;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-standard: 300ms;
+  --duration-emphasized: 620ms;
 
   --animate-rise: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade: fade 0.45s ease-out both;
 }
+
 
 @keyframes rise {
   from {
