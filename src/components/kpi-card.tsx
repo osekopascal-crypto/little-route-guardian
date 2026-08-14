@@ -96,7 +96,10 @@ export function KpiCard({
           <p className="type-meta text-muted-foreground">{hint}</p>
         </div>
 
-        <div aria-hidden="true" className="route-line mt-auto w-full pt-4 opacity-70" />
+        <div aria-hidden="true" className="mt-auto pt-5">
+          <div className="route-line w-full opacity-70" />
+        </div>
+
       </div>
     </div>
   );
