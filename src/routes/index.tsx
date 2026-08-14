@@ -59,34 +59,40 @@ function LoginPage() {
       <Environment />
 
       {/* Brand panel */}
-      <section className="relative hidden flex-col justify-center gap-14 overflow-hidden p-12 lg:flex xl:p-16">
+      <section className="relative hidden flex-col justify-between gap-14 overflow-hidden p-12 lg:flex xl:p-16">
         <Brand size="lg" />
         <div className="max-w-lg">
           <p className="type-label text-primary">Premium school mobility platform</p>
           <h2 className="type-display mt-5 text-chrome">
-            Every child accounted for, every journey.
+            Smart transport.
+            <br />
+            <span className="text-holo">Safer journeys.</span>
           </h2>
           <p className="type-body mt-6 text-muted-foreground">
-            One calm, secure operations layer connecting school administrators, bus attendants
-            and parents — built so each school's data stays strictly its own.
+            The intelligent platform connecting schools, parents and transport teams across
+            Kiambu, Ruiru, Kikuyu and beyond — with every school's data strictly its own.
           </p>
           <div aria-hidden="true" className="route-line mt-8 w-56" />
+          <ul className="mt-8 grid gap-2.5">
+            {[
+              "School-isolated data by design",
+              "Role-aware access for admins, attendants and parents",
+              "Calm, real-time reassurance for families",
+            ].map((item) => (
+              <li
+                key={item}
+                className="glass-soft silk type-body-sm flex items-center gap-3 px-4 py-3 text-foreground"
+              >
+                <ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="grid gap-2.5">
-          {[
-            "School-isolated data by design",
-            "Role-aware access for admins, attendants and parents",
-            "Calm, real-time reassurance for families",
-          ].map((item) => (
-            <li
-              key={item}
-              className="glass-soft type-body-sm flex items-center gap-3 px-4 py-3 text-foreground"
-            >
-              <ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />
-              {item}
-            </li>
-          ))}
-        </ul>
+        <p className="type-meta text-muted-foreground">
+          Powered by <span className="font-display font-semibold text-foreground">Pasco Labs</span>{" "}
+          · Building digital solutions that move Africa forward.
+        </p>
       </section>
 
       {/* Form panel */}
@@ -97,21 +103,24 @@ function LoginPage() {
           </div>
 
           <div className="mt-9 lg:mt-0">
-            <h1 className="type-h1 text-chrome">Welcome back</h1>
+            <p className="type-label text-primary">Welcome back</p>
+            <h1 className="type-h1 mt-3 text-chrome">Your workspace awaits.</h1>
             <p className="type-body-sm mt-2.5 text-muted-foreground">
               Sign in to continue to your school transport workspace.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="glass edge-lit mt-7 space-y-5 p-6 sm:p-7">
-
+          <form
+            onSubmit={handleSubmit}
+            className="glass-elevated silk crest edge-lit mt-7 space-y-5 p-6 sm:p-7"
+          >
             <div className="space-y-2">
               <Label htmlFor="email" className="type-label text-muted-foreground">
-                Email
+                Email address
               </Label>
               <div className="relative">
                 <Mail
-                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
                   aria-hidden="true"
                 />
                 <Input
@@ -122,7 +131,7 @@ function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@school.ac.ke"
-                  className="min-h-12 pl-10"
+                  className="min-h-12 rounded-xl bg-surface-1/70 pl-11 transition-shadow duration-200 focus-visible:shadow-glow-primary"
                 />
               </div>
             </div>
@@ -133,7 +142,7 @@ function LoginPage() {
               </Label>
               <div className="relative">
                 <Lock
-                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
                   aria-hidden="true"
                 />
                 <Input
@@ -144,7 +153,7 @@ function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="min-h-12 pl-10"
+                  className="min-h-12 rounded-xl bg-surface-1/70 pl-11 transition-shadow duration-200 focus-visible:shadow-glow-primary"
                 />
               </div>
             </div>
@@ -159,7 +168,11 @@ function LoginPage() {
               </p>
             )}
 
-            <Button type="submit" disabled={busy} className="type-button min-h-12 w-full gap-2">
+            <Button
+              type="submit"
+              disabled={busy}
+              className="type-button sheen min-h-13 w-full gap-2 rounded-xl"
+            >
               {busy ? (
                 <>
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
@@ -167,16 +180,21 @@ function LoginPage() {
                 </>
               ) : (
                 <>
-                  Sign In
+                  Sign in
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </>
               )}
             </Button>
 
             <p className="type-caption text-center text-muted-foreground">
-              Accounts are created by your school administrator.
+              Need help? Contact your school administrator.
             </p>
           </form>
+
+          <p className="type-meta mt-6 flex items-center justify-center gap-2 text-center text-muted-foreground lg:hidden">
+            Powered by{" "}
+            <span className="font-display font-semibold text-foreground">Pasco Labs</span>
+          </p>
         </div>
       </section>
     </div>
