@@ -2,7 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Bus, CalendarClock, Map, ShieldCheck, UserRound, Users } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
+import { FleetMap, UpcomingStops } from "@/components/fleet-map";
 import { KpiCard } from "@/components/kpi-card";
+
 import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
@@ -93,22 +95,31 @@ function AdminDashboard() {
             emphasis="quiet"
             label="Routes"
             value="—"
-            hint="Routes & stops arrive in Phase 3"
+            hint="Kiambu · Ndumberi · Banana corridors"
             icon={<Map className="size-4" />}
             delay={140}
           />
           <KpiCard
             emphasis="quiet"
             className="lg:col-span-2"
-            label="Today's Trips"
+            label="Today's trips"
             value="—"
-            hint="Live trips arrive in Phase 4"
+            hint="Live trips arrive with the trips module"
             icon={<CalendarClock className="size-4" />}
             delay={200}
           />
         </div>
-
       </section>
+
+      <section className="mt-8 grid gap-4 lg:grid-cols-[1.5fr_1fr]" aria-label="Live fleet">
+        <div className="animate-rise">
+          <FleetMap />
+        </div>
+        <div className="animate-rise" style={{ animationDelay: "80ms" }}>
+          <UpcomingStops />
+        </div>
+      </section>
+
 
       <section className="mt-8 grid gap-4 lg:grid-cols-3" aria-labelledby="register">
         <div className="scene-3d animate-rise lg:col-span-2">
