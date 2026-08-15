@@ -59,7 +59,7 @@ function LoginPage() {
       <Environment />
 
       {/* Brand panel */}
-      <section className="relative hidden flex-col justify-between gap-14 overflow-hidden p-12 lg:flex xl:p-16">
+      <section className="relative hidden flex-col justify-center gap-12 overflow-hidden p-12 lg:flex xl:p-16">
         <Brand size="lg" />
         <div className="max-w-lg">
           <p className="type-label text-primary">Premium school mobility platform</p>
@@ -89,7 +89,7 @@ function LoginPage() {
             ))}
           </ul>
         </div>
-        <p className="type-meta text-muted-foreground">
+        <p className="type-meta absolute bottom-12 left-12 text-muted-foreground xl:left-16">
           Powered by <span className="font-display font-semibold text-foreground">Pasco Labs</span>{" "}
           · Building digital solutions that move Africa forward.
         </p>

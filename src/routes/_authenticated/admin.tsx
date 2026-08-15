@@ -112,7 +112,7 @@ function AdminDashboard() {
           />
           <KpiCard
             emphasis="quiet"
-            className="lg:col-span-2"
+            className="lg:col-span-4"
             label="Today's trips"
             value="—"
             hint="Live trips arrive with the trips module"
