@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 /** Refined obsidian shield mark with an amber bus glyph. */
 function Mark({ className }: { className?: string }) {
-  const gid = `brand-amber-${useId()}`;
+  const gid = `brand-amber-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
     <svg viewBox="0 0 40 40" className={className} aria-hidden="true" fill="none">
       <defs>
