@@ -37,9 +37,17 @@ const journey = [
   { label: "Pickup", icon: MapPin },
   { label: "Bus", icon: Bus },
   { label: "School", icon: School },
-];
+] as const;
 
-/** Home → Pickup → Bus → School, with the current position highlighted. */
+/** Human, parent-first status language — never infrastructure language. */
+const statusCopy = [
+  "At home",
+  "Waiting for pickup",
+  "On the way to school",
+  "At school",
+] as const;
+
+/** Home → Pickup → Bus → School, with the current position glowing. */
 function JourneyRibbon({ position = 0 }: { position?: number }) {
   return (
     <div className="mt-7">
@@ -52,7 +60,10 @@ function JourneyRibbon({ position = 0 }: { position?: number }) {
           const active = i === position;
           const done = i < position;
           return (
-            <li key={step.label} className="relative z-10 flex flex-1 flex-col items-center gap-2.5">
+            <li
+              key={step.label}
+              className="relative z-10 flex flex-1 flex-col items-center gap-2.5"
+            >
               <span
                 aria-hidden="true"
                 className={cn(
@@ -64,7 +75,7 @@ function JourneyRibbon({ position = 0 }: { position?: number }) {
                       : "glass-soft text-muted-foreground",
                 )}
               >
-                <step.icon className="size-4" />
+                <step.icon className="size-4" strokeWidth={1.9} />
               </span>
               <span
                 className={cn(
@@ -89,34 +100,35 @@ function ParentDashboard() {
 
   return (
     <AppShell
-      title={`Welcome, ${firstName(profile?.full_name)}`}
-      greetingLine={school ? `Your family's journeys at ${school.name}.` : undefined}
+      title={`Good morning, ${firstName(profile?.full_name)}`}
+      greetingLine={school ? `Here's how your family's journeys look today.` : undefined}
       density="roomy"
     >
       <section className="mx-auto max-w-md space-y-5" aria-labelledby="children">
-        <h2 id="children" className="sr-only">
+        <h2 id="children" className="type-label text-muted-foreground">
           My children
         </h2>
 
         {children.isLoading ? (
-          <SkeletonBlock label="Connecting to fleet…" lines={4} />
+          <SkeletonBlock label="Bringing in today's journeys…" lines={4} />
         ) : list.length === 0 ? (
           <EmptyState
             icon={<Heart className="size-6" aria-hidden="true" />}
             title="No children linked yet"
-            description="Your school links your children to your account. As soon as that's done, each pupil appears here with their live journey."
+            description="Your school links your children to your account. As soon as that's done, each pupil appears here with their journey."
           />
         ) : (
           <ul className="space-y-5">
             {list.map((link, i) => {
               const age = ageFrom(link.student.date_of_birth);
+              const position = 0;
               return (
                 <li
                   key={link.id}
                   className="scene-3d animate-rise"
                   style={{ animationDelay: `${i * 70}ms` }}
                 >
-                  <div className="glass lift-3d edge-lit sheen p-6">
+                  <div className="glass-elevated silk crest lift-3d edge-lit p-6">
                     <div className="flex items-start gap-4">
                       <span
                         aria-hidden="true"
@@ -139,12 +151,14 @@ function ParentDashboard() {
                       </StatusPill>
                     </div>
 
-                    <JourneyRibbon position={0} />
+                    <JourneyRibbon position={position} />
 
-                    <p className="type-body-sm mt-7 text-muted-foreground">
-                      At home — live pickup and arrival updates begin the moment your school
-                      starts a trip.
-                    </p>
+                    <div className="mt-7 flex items-center justify-between gap-3 border-t border-hairline pt-5">
+                      <p className="type-section text-foreground">{statusCopy[position]}</p>
+                      <p className="type-meta text-muted-foreground">
+                        Updates begin when the bus sets off
+                      </p>
+                    </div>
                   </div>
                 </li>
               );

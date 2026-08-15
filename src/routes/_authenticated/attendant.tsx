@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, ClipboardList, Clock, Users } from "lucide-react";
+import { Check, Clock, MapPin } from "lucide-react";
+import { useState } from "react";
 
 import { AppShell } from "@/components/app-shell";
 import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
+import { Button } from "@/components/ui/button";
 import { firstName, greeting, useAuth } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/attendant")({
   head: () => ({
@@ -28,8 +31,15 @@ export const Route = createFileRoute("/_authenticated/attendant")({
   ),
 });
 
+/** Preview roster — real trips arrive with the trips module. */
+const roster = ["Zawadi Mwangi", "Brian Kamau", "Mary Njeri", "Kevin Otieno", "Sarah Wanjiku"];
+
 function AttendantDashboard() {
   const { profile, school } = useAuth();
+  const [boarded, setBoarded] = useState<string[]>([]);
+
+  const toggle = (name: string) =>
+    setBoarded((prev) => (prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]));
 
   return (
     <AppShell
@@ -38,60 +48,74 @@ function AttendantDashboard() {
       density="roomy"
     >
       <section className="mx-auto max-w-md space-y-4" aria-labelledby="today">
-        <div className="surface-2 animate-rise rounded-3xl p-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 id="today" className="type-h2">
-              Today's Trip
-            </h2>
+        <div className="glass-elevated silk crest animate-rise p-6">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+            <div className="min-w-0">
+              <p className="type-label text-primary">Morning trip</p>
+              <h2 id="today" className="type-h1 mt-2 text-chrome">
+                Bus 07
+              </h2>
+              <p className="type-body-sm mt-2 flex items-center gap-2 text-muted-foreground">
+                <MapPin className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                Kiambu Stage · Kiambu Road
+              </p>
+            </div>
             <StatusPill tone="warning" icon={<Clock className="size-3.5" aria-hidden="true" />}>
-              Coming in Phase 4
+              Preview
             </StatusPill>
           </div>
-          <p className="type-body-sm mt-3 text-muted-foreground">
-            Your assigned bus, route and pupil list will appear here. Boarding and alighting
-            will be one large tap per pupil — no typing, no searching.
+
+          <div aria-hidden="true" className="route-line mt-6 w-full" />
+
+          <p className="type-section mt-6 text-foreground">
+            {boarded.length} of {roster.length} pupils on board
           </p>
 
-          <div className="route-motif mt-6 space-y-3 rounded-2xl border border-hairline bg-surface-1/60 p-4">
-            {[
-              { label: "Board pupil", icon: <Users className="size-5" aria-hidden="true" /> },
-              {
-                label: "Alight pupil",
-                icon: <CheckCircle2 className="size-5" aria-hidden="true" />,
-              },
-            ].map((action) => (
-              <div
-                key={action.label}
-                aria-disabled="true"
-                className="flex min-h-16 items-center justify-between rounded-xl border border-dashed border-border bg-background/40 px-5 opacity-70"
-              >
-                <span className="type-button flex items-center gap-3 text-foreground">
-                  {action.icon}
-                  {action.label}
-                </span>
-                <span className="type-label text-muted-foreground">Locked</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="surface-1 animate-rise rounded-2xl p-5" style={{ animationDelay: "80ms" }}>
-          <p className="type-label text-muted-foreground">Checklist</p>
-          <ul className="mt-3 space-y-2.5">
-            {[
-              "Your account is active and linked to your school",
-              "Boarding records will sync securely to your school only",
-              "Trip tools unlock once routes and buses are configured",
-            ].map((item) => (
-              <li key={item} className="type-body-sm flex gap-3 text-muted-foreground">
-                <ClipboardList
-                  className="mt-0.5 size-4 shrink-0 text-accent"
-                  aria-hidden="true"
-                />
-                {item}
-              </li>
-            ))}
+          <ul className="mt-4 space-y-2.5">
+            {roster.map((name) => {
+              const on = boarded.includes(name);
+              return (
+                <li key={name}>
+                  <button
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggle(name)}
+                    className={cn(
+                      "tap-target flex w-full items-center gap-4 border px-5 text-left",
+                      on
+                        ? "border-primary/50 bg-primary/12"
+                        : "border-hairline bg-surface-1/70 hover:bg-surface-1",
+                    )}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "grid size-9 shrink-0 place-items-center rounded-full border transition-colors duration-200",
+                        on
+                          ? "chip-gradient border-transparent"
+                          : "border-border bg-background/50 text-muted-foreground",
+                      )}
+                    >
+                      {on ? <Check className="size-5" strokeWidth={2.4} /> : null}
+                    </span>
+                    <span className="type-button min-w-0 flex-1 truncate text-foreground">
+                      {name}
+                    </span>
+                    <span className="type-meta shrink-0 text-muted-foreground">
+                      {on ? "On board" : "Waiting"}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
+
+          <Button disabled className="type-button mt-6 min-h-14 w-full rounded-xl">
+            Confirm stop
+          </Button>
+          <p className="type-caption mt-3 text-center text-muted-foreground">
+            Confirming stops goes live once your school configures buses and routes.
+          </p>
         </div>
       </section>
     </AppShell>
