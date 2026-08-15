@@ -123,13 +123,14 @@ function AdminDashboard() {
 
       <section className="mt-8 grid gap-4 lg:grid-cols-3" aria-labelledby="register">
         <div className="scene-3d animate-rise lg:col-span-2">
-          <div className="glass lift-3d edge-lit h-full p-6">
+          <div className="glass-elevated silk crest lift-3d edge-lit h-full p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 id="register" className="type-h2 text-chrome">
                 Newest pupils
               </h2>
-              <StatusPill tone="success">Phase 2 live</StatusPill>
+              <StatusPill tone="success">Register live</StatusPill>
             </div>
+
 
             {recent.length === 0 ? (
               <p className="type-body mt-4 text-muted-foreground">
@@ -171,39 +172,46 @@ function AdminDashboard() {
         </div>
 
         <div className="scene-3d animate-rise" style={{ animationDelay: "80ms" }}>
-          <div className="glass lift-3d edge-lit h-full p-6">
-            <div
-              aria-hidden="true"
-              className="chip-gradient float-y grid size-12 place-items-center rounded-2xl"
-            >
-              <ShieldCheck className="size-6" />
+          <div className="glass-elevated silk crest lift-3d edge-lit h-full p-6">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="type-h2 text-chrome">Alerts</h2>
+              <StatusPill tone="warning">2 open</StatusPill>
             </div>
-            <h2 className="type-h3 mt-5 text-foreground">Roadmap</h2>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-5 space-y-2.5">
               {[
-                ["Phase 1", "Accounts & tenancy", "done"],
-                ["Phase 2", "Pupils & families", "done"],
-                ["Phase 3", "Buses, routes & stops", "next"],
-                ["Phase 4", "Trips & boarding", "later"],
-              ].map(([phase, label, state]) => (
-                <li
-                  key={phase}
-                  className="glass-soft flex items-center justify-between gap-3 px-4 py-2.5"
-                >
-                  <span className="type-body-sm text-foreground">{label}</span>
-                  <StatusPill
-                    tone={state === "done" ? "success" : state === "next" ? "info" : "neutral"}
-                  >
-                    {phase}
-                  </StatusPill>
+                {
+                  title: "Bus 03 running late",
+                  detail: "Kiambu Stage · 8 min behind",
+                  tone: "error" as const,
+                },
+                {
+                  title: "Road works ahead",
+                  detail: "Banana Junction · reported 15 min ago",
+                  tone: "warning" as const,
+                },
+              ].map((a) => (
+                <li key={a.title} className="glass-soft flex items-start gap-3 px-4 py-3.5">
+                  <TriangleAlert
+                    className={cn(
+                      "mt-0.5 size-4 shrink-0",
+                      a.tone === "error" ? "text-destructive" : "text-warning",
+                    )}
+                    aria-hidden="true"
+                  />
+                  <div className="min-w-0">
+                    <p className="type-body-sm font-semibold text-foreground">{a.title}</p>
+                    <p className="type-meta text-muted-foreground">{a.detail}</p>
+                  </div>
                 </li>
               ))}
             </ul>
-            <p className="type-caption mt-4 flex items-center gap-2 text-muted-foreground">
-              <Bus className="size-4 text-accent" aria-hidden="true" />
-              Fleet and live tracking unlock next.
+            <div aria-hidden="true" className="route-line mt-6 w-full opacity-70" />
+            <p className="type-caption mt-5 flex items-center gap-2 text-muted-foreground">
+              <ShieldCheck className="size-4 shrink-0 text-accent" aria-hidden="true" />
+              Every record here stays isolated to {school?.code ?? "your school"}.
             </p>
           </div>
+
         </div>
       </section>
     </AppShell>
