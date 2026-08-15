@@ -84,7 +84,7 @@ function AdminDashboard() {
         <h2 id="kpis" className="sr-only">
           Transport overview
         </h2>
-        <div className="grid gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
           <KpiCard
             className="lg:col-span-2"
             emphasis="primary"
@@ -112,7 +112,6 @@ function AdminDashboard() {
           />
           <KpiCard
             emphasis="quiet"
-            className="lg:col-span-4"
             label="Today's trips"
             value="—"
             hint="Live trips arrive with the trips module"
