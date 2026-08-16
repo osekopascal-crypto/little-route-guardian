@@ -1,13 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Bus, Heart, House, MapPin, School } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Bus, Heart, House, MapPin, Navigation, School } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { RoleGate } from "@/components/role-gate";
 import { SkeletonBlock } from "@/components/skeleton-block";
 import { StatusPill } from "@/components/status-pill";
+import { Button } from "@/components/ui/button";
 import { firstName, useAuth } from "@/lib/auth";
 import { ageFrom, fullName, initialsOf, relationshipLabel, useMyChildren } from "@/lib/students";
+import { journeyPosition, riderStatusLabel, useMyRiders, type Rider } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/parent")({
@@ -40,15 +42,10 @@ const journey = [
 ] as const;
 
 /** Human, parent-first status language — never infrastructure language. */
-const statusCopy = [
-  "At home",
-  "Waiting for pickup",
-  "On the way to school",
-  "At school",
-] as const;
+const statusCopy = ["At home", "Waiting for pickup", "On the way", "Arrived safely"] as const;
 
 /** Home → Pickup → Bus → School, with the current position glowing. */
-function JourneyRibbon({ position = 0 }: { position?: number }) {
+export function JourneyRibbon({ position = 0 }: { position?: number }) {
   return (
     <div className="mt-7">
       <ol className="relative flex items-start justify-between gap-1" aria-label="Journey">
@@ -96,7 +93,11 @@ function JourneyRibbon({ position = 0 }: { position?: number }) {
 function ParentDashboard() {
   const { profile, school } = useAuth();
   const children = useMyChildren();
+  const riders = useMyRiders();
   const list = children.data ?? [];
+
+  const latestFor = (studentId: string): Rider | undefined =>
+    (riders.data ?? []).find((r) => r.student_id === studentId);
 
   return (
     <AppShell
@@ -121,7 +122,9 @@ function ParentDashboard() {
           <ul className="space-y-5">
             {list.map((link, i) => {
               const age = ageFrom(link.student.date_of_birth);
-              const position = 0;
+              const rider = latestFor(link.student_id);
+              const position = rider ? journeyPosition(rider) : 0;
+              const onTheRoad = rider?.trip.status === "in_progress";
               return (
                 <li
                   key={link.id}
@@ -154,11 +157,29 @@ function ParentDashboard() {
                     <JourneyRibbon position={position} />
 
                     <div className="mt-7 flex items-center justify-between gap-3 border-t border-hairline pt-5">
-                      <p className="type-section text-foreground">{statusCopy[position]}</p>
-                      <p className="type-meta text-muted-foreground">
-                        Updates begin when the bus sets off
-                      </p>
+                      <div className="min-w-0">
+                        <p className="type-section text-foreground">
+                          {rider ? riderStatusLabel[rider.status] : statusCopy[position]}
+                        </p>
+                        <p className="type-meta text-muted-foreground">
+                          {rider
+                            ? `${rider.trip.route?.name ?? "Route"} · ${rider.trip.bus?.label ?? "Bus to be assigned"}`
+                            : "Updates begin when the bus sets off"}
+                        </p>
+                      </div>
+                      {onTheRoad && (
+                        <StatusPill tone="success">Live</StatusPill>
+                      )}
                     </div>
+
+                    {rider && (
+                      <Button asChild className="type-button mt-5 min-h-12 w-full rounded-xl">
+                        <Link to="/track/$studentId" params={{ studentId: link.student_id }}>
+                          <Navigation className="size-4" aria-hidden="true" />
+                          Track the bus
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 </li>
               );
