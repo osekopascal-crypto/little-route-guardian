@@ -252,9 +252,12 @@ export function useSetRiderStatus() {
       status: RiderStatus;
       tripId: string;
     }) => {
-      const patch: Record<string, unknown> = { status };
-      if (status === "on_board") patch['boarded_at'] = new Date().toISOString();
-      if (status === "dropped") patch['dropped_at'] = new Date().toISOString();
+      const now = new Date().toISOString();
+      const patch = {
+        status,
+        ...(status === "on_board" ? { boarded_at: now } : {}),
+        ...(status === "dropped" ? { dropped_at: now } : {}),
+      };
       const { error } = await supabase.from("trip_students").update(patch).eq("id", id);
       if (error) throw new Error(friendly(error));
     },
