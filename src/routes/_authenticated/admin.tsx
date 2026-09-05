@@ -20,6 +20,7 @@ import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { firstName, greeting, useAuth } from "@/lib/auth";
+import { useTodayTrips } from "@/lib/tracking";
 import {
   fullName,
   initialsOf,
