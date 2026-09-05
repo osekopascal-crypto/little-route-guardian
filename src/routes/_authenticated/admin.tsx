@@ -104,17 +104,18 @@ function AdminDashboard() {
           />
           <KpiCard
             emphasis="quiet"
-            label="Routes"
-            value="—"
-            hint="Kiambu · Ndumberi · Banana corridors"
+            label="Routes running today"
+            value={trips.isLoading ? "—" : String(routeCount)}
+            hint="Corridors with a scheduled run"
             icon={<Map className="size-4" />}
             delay={140}
           />
           <KpiCard
             emphasis="quiet"
+            live
             label="Today's trips"
-            value="—"
-            hint="Live trips arrive with the trips module"
+            value={trips.isLoading ? "—" : String(board.length)}
+            hint={`${onRoad} on the road right now`}
             icon={<CalendarClock className="size-4" />}
             delay={200}
           />
