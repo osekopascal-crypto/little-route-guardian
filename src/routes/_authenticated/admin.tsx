@@ -20,6 +20,7 @@ import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { firstName, greeting, useAuth } from "@/lib/auth";
+import { useTodayTrips } from "@/lib/tracking";
 import {
   fullName,
   initialsOf,
@@ -56,6 +57,11 @@ function AdminDashboard() {
   const students = useStudents();
   const links = useGuardianLinks();
   const parents = useParentOptions();
+  const trips = useTodayTrips();
+  const board = trips.data ?? [];
+  const onRoad = board.filter((t) => t.status === "in_progress").length;
+  const routeCount = new Set(board.map((t) => t.route_id)).size;
+
 
   const list = students.data ?? [];
   const active = list.filter((s) => s.status === "active").length;
@@ -104,17 +110,18 @@ function AdminDashboard() {
           />
           <KpiCard
             emphasis="quiet"
-            label="Routes"
-            value="—"
-            hint="Kiambu · Ndumberi · Banana corridors"
+            label="Routes running today"
+            value={trips.isLoading ? "—" : String(routeCount)}
+            hint="Corridors with a scheduled run"
             icon={<Map className="size-4" />}
             delay={140}
           />
           <KpiCard
             emphasis="quiet"
+            live
             label="Today's trips"
-            value="—"
-            hint="Live trips arrive with the trips module"
+            value={trips.isLoading ? "—" : String(board.length)}
+            hint={`${onRoad} on the road right now`}
             icon={<CalendarClock className="size-4" />}
             delay={200}
           />

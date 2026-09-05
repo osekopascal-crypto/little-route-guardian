@@ -15,6 +15,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAttendantRouteImport } from './routes/_authenticated/attendant'
 import { Route as AuthenticatedParentRouteImport } from './routes/_authenticated/parent'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
+import { Route as AuthenticatedTrackStudentIdRouteImport } from './routes/_authenticated/track.$studentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +46,12 @@ const AuthenticatedStudentsRoute = AuthenticatedStudentsRouteImport.update({
   path: '/students',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTrackStudentIdRoute =
+  AuthenticatedTrackStudentIdRouteImport.update({
+    id: '/track/$studentId',
+    path: '/track/$studentId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/parent': typeof AuthenticatedParentRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesByTo {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/parent': typeof AuthenticatedParentRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +77,25 @@ export interface FileRoutesById {
   '/_authenticated/attendant': typeof AuthenticatedAttendantRoute
   '/_authenticated/parent': typeof AuthenticatedParentRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
+  '/_authenticated/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/attendant' | '/parent' | '/students'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/attendant'
+    | '/parent'
+    | '/students'
+    | '/track/$studentId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/attendant' | '/parent' | '/students'
+  to:
+    | '/'
+    | '/admin'
+    | '/attendant'
+    | '/parent'
+    | '/students'
+    | '/track/$studentId'
   id:
     | '__root__'
     | '/'
@@ -82,6 +104,7 @@ export interface FileRouteTypes {
     | '/_authenticated/attendant'
     | '/_authenticated/parent'
     | '/_authenticated/students'
+    | '/_authenticated/track/$studentId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -133,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudentsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/track/$studentId': {
+      id: '/_authenticated/track/$studentId'
+      path: '/track/$studentId'
+      fullPath: '/track/$studentId'
+      preLoaderRoute: typeof AuthenticatedTrackStudentIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -141,6 +171,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAttendantRoute: typeof AuthenticatedAttendantRoute
   AuthenticatedParentRoute: typeof AuthenticatedParentRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
+  AuthenticatedTrackStudentIdRoute: typeof AuthenticatedTrackStudentIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -148,6 +179,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAttendantRoute: AuthenticatedAttendantRoute,
   AuthenticatedParentRoute: AuthenticatedParentRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
+  AuthenticatedTrackStudentIdRoute: AuthenticatedTrackStudentIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
