@@ -56,6 +56,11 @@ function AdminDashboard() {
   const students = useStudents();
   const links = useGuardianLinks();
   const parents = useParentOptions();
+  const trips = useTodayTrips();
+  const board = trips.data ?? [];
+  const onRoad = board.filter((t) => t.status === "in_progress").length;
+  const routeCount = new Set(board.map((t) => t.route_id)).size;
+
 
   const list = students.data ?? [];
   const active = list.filter((s) => s.status === "active").length;
