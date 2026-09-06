@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAttendantRouteImport } from './routes/_authenticated/attendant'
+import { Route as AuthenticatedFleetRouteImport } from './routes/_authenticated/fleet'
 import { Route as AuthenticatedParentRouteImport } from './routes/_authenticated/parent'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
 import { Route as AuthenticatedTrackStudentIdRouteImport } from './routes/_authenticated/track.$studentId'
@@ -36,6 +37,11 @@ const AuthenticatedAttendantRoute = AuthenticatedAttendantRouteImport.update({
   path: '/attendant',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFleetRoute = AuthenticatedFleetRouteImport.update({
+  id: '/fleet',
+  path: '/fleet',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedParentRoute = AuthenticatedParentRouteImport.update({
   id: '/parent',
   path: '/parent',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/attendant': typeof AuthenticatedAttendantRoute
+  '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
   '/students': typeof AuthenticatedStudentsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/attendant': typeof AuthenticatedAttendantRoute
+  '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
   '/students': typeof AuthenticatedStudentsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/attendant': typeof AuthenticatedAttendantRoute
+  '/_authenticated/fleet': typeof AuthenticatedFleetRoute
   '/_authenticated/parent': typeof AuthenticatedParentRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
   '/_authenticated/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/attendant'
+    | '/fleet'
     | '/parent'
     | '/students'
     | '/track/$studentId'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/attendant'
+    | '/fleet'
     | '/parent'
     | '/students'
     | '/track/$studentId'
@@ -102,6 +113,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_authenticated/admin'
     | '/_authenticated/attendant'
+    | '/_authenticated/fleet'
     | '/_authenticated/parent'
     | '/_authenticated/students'
     | '/_authenticated/track/$studentId'
@@ -142,6 +154,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAttendantRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/fleet': {
+      id: '/_authenticated/fleet'
+      path: '/fleet'
+      fullPath: '/fleet'
+      preLoaderRoute: typeof AuthenticatedFleetRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parent': {
       id: '/_authenticated/parent'
       path: '/parent'
@@ -169,6 +188,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAttendantRoute: typeof AuthenticatedAttendantRoute
+  AuthenticatedFleetRoute: typeof AuthenticatedFleetRoute
   AuthenticatedParentRoute: typeof AuthenticatedParentRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
   AuthenticatedTrackStudentIdRoute: typeof AuthenticatedTrackStudentIdRoute
@@ -177,6 +197,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAttendantRoute: AuthenticatedAttendantRoute,
+  AuthenticatedFleetRoute: AuthenticatedFleetRoute,
   AuthenticatedParentRoute: AuthenticatedParentRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
   AuthenticatedTrackStudentIdRoute: AuthenticatedTrackStudentIdRoute,
