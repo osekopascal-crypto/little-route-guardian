@@ -17,6 +17,7 @@ import { Route as AuthenticatedFleetRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedParentRouteImport } from './routes/_authenticated/parent'
 import { Route as AuthenticatedRoutesRouteImport } from './routes/_authenticated/routes'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
+import { Route as AuthenticatedTripsRouteImport } from './routes/_authenticated/trips'
 import { Route as AuthenticatedTrackStudentIdRouteImport } from './routes/_authenticated/track.$studentId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +59,11 @@ const AuthenticatedStudentsRoute = AuthenticatedStudentsRouteImport.update({
   path: '/students',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTripsRoute = AuthenticatedTripsRouteImport.update({
+  id: '/trips',
+  path: '/trips',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTrackStudentIdRoute =
   AuthenticatedTrackStudentIdRouteImport.update({
     id: '/track/$studentId',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/parent': typeof AuthenticatedParentRoute
   '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/trips': typeof AuthenticatedTripsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesByTo {
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/parent': typeof AuthenticatedParentRoute
   '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/trips': typeof AuthenticatedTripsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesById {
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_authenticated/parent': typeof AuthenticatedParentRoute
   '/_authenticated/routes': typeof AuthenticatedRoutesRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
+  '/_authenticated/trips': typeof AuthenticatedTripsRoute
   '/_authenticated/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRouteTypes {
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/routes'
     | '/students'
+    | '/trips'
     | '/track/$studentId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/routes'
     | '/students'
+    | '/trips'
     | '/track/$studentId'
   id:
     | '__root__'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/_authenticated/parent'
     | '/_authenticated/routes'
     | '/_authenticated/students'
+    | '/_authenticated/trips'
     | '/_authenticated/track/$studentId'
   fileRoutesById: FileRoutesById
 }
@@ -194,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudentsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/trips': {
+      id: '/_authenticated/trips'
+      path: '/trips'
+      fullPath: '/trips'
+      preLoaderRoute: typeof AuthenticatedTripsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/track/$studentId': {
       id: '/_authenticated/track/$studentId'
       path: '/track/$studentId'
@@ -211,6 +230,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedParentRoute: typeof AuthenticatedParentRoute
   AuthenticatedRoutesRoute: typeof AuthenticatedRoutesRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
+  AuthenticatedTripsRoute: typeof AuthenticatedTripsRoute
   AuthenticatedTrackStudentIdRoute: typeof AuthenticatedTrackStudentIdRoute
 }
 
@@ -221,6 +241,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedParentRoute: AuthenticatedParentRoute,
   AuthenticatedRoutesRoute: AuthenticatedRoutesRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
+  AuthenticatedTripsRoute: AuthenticatedTripsRoute,
   AuthenticatedTrackStudentIdRoute: AuthenticatedTrackStudentIdRoute,
 }
 
