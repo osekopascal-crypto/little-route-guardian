@@ -15,7 +15,9 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAttendantRouteImport } from './routes/_authenticated/attendant'
 import { Route as AuthenticatedFleetRouteImport } from './routes/_authenticated/fleet'
 import { Route as AuthenticatedParentRouteImport } from './routes/_authenticated/parent'
+import { Route as AuthenticatedRoutesRouteImport } from './routes/_authenticated/routes'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
+import { Route as AuthenticatedTripsRouteImport } from './routes/_authenticated/trips'
 import { Route as AuthenticatedTrackStudentIdRouteImport } from './routes/_authenticated/track.$studentId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,9 +49,19 @@ const AuthenticatedParentRoute = AuthenticatedParentRouteImport.update({
   path: '/parent',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRoutesRoute = AuthenticatedRoutesRouteImport.update({
+  id: '/routes',
+  path: '/routes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStudentsRoute = AuthenticatedStudentsRouteImport.update({
   id: '/students',
   path: '/students',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTripsRoute = AuthenticatedTripsRouteImport.update({
+  id: '/trips',
+  path: '/trips',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTrackStudentIdRoute =
@@ -65,7 +77,9 @@ export interface FileRoutesByFullPath {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
+  '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/trips': typeof AuthenticatedTripsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesByTo {
@@ -74,7 +88,9 @@ export interface FileRoutesByTo {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
+  '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/trips': typeof AuthenticatedTripsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRoutesById {
@@ -85,7 +101,9 @@ export interface FileRoutesById {
   '/_authenticated/attendant': typeof AuthenticatedAttendantRoute
   '/_authenticated/fleet': typeof AuthenticatedFleetRoute
   '/_authenticated/parent': typeof AuthenticatedParentRoute
+  '/_authenticated/routes': typeof AuthenticatedRoutesRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
+  '/_authenticated/trips': typeof AuthenticatedTripsRoute
   '/_authenticated/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
 export interface FileRouteTypes {
@@ -96,7 +114,9 @@ export interface FileRouteTypes {
     | '/attendant'
     | '/fleet'
     | '/parent'
+    | '/routes'
     | '/students'
+    | '/trips'
     | '/track/$studentId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,7 +125,9 @@ export interface FileRouteTypes {
     | '/attendant'
     | '/fleet'
     | '/parent'
+    | '/routes'
     | '/students'
+    | '/trips'
     | '/track/$studentId'
   id:
     | '__root__'
@@ -115,7 +137,9 @@ export interface FileRouteTypes {
     | '/_authenticated/attendant'
     | '/_authenticated/fleet'
     | '/_authenticated/parent'
+    | '/_authenticated/routes'
     | '/_authenticated/students'
+    | '/_authenticated/trips'
     | '/_authenticated/track/$studentId'
   fileRoutesById: FileRoutesById
 }
@@ -168,11 +192,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/routes': {
+      id: '/_authenticated/routes'
+      path: '/routes'
+      fullPath: '/routes'
+      preLoaderRoute: typeof AuthenticatedRoutesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/students': {
       id: '/_authenticated/students'
       path: '/students'
       fullPath: '/students'
       preLoaderRoute: typeof AuthenticatedStudentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/trips': {
+      id: '/_authenticated/trips'
+      path: '/trips'
+      fullPath: '/trips'
+      preLoaderRoute: typeof AuthenticatedTripsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/track/$studentId': {
@@ -190,7 +228,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAttendantRoute: typeof AuthenticatedAttendantRoute
   AuthenticatedFleetRoute: typeof AuthenticatedFleetRoute
   AuthenticatedParentRoute: typeof AuthenticatedParentRoute
+  AuthenticatedRoutesRoute: typeof AuthenticatedRoutesRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
+  AuthenticatedTripsRoute: typeof AuthenticatedTripsRoute
   AuthenticatedTrackStudentIdRoute: typeof AuthenticatedTrackStudentIdRoute
 }
 
@@ -199,7 +239,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAttendantRoute: AuthenticatedAttendantRoute,
   AuthenticatedFleetRoute: AuthenticatedFleetRoute,
   AuthenticatedParentRoute: AuthenticatedParentRoute,
+  AuthenticatedRoutesRoute: AuthenticatedRoutesRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
+  AuthenticatedTripsRoute: AuthenticatedTripsRoute,
   AuthenticatedTrackStudentIdRoute: AuthenticatedTrackStudentIdRoute,
 }
 
