@@ -15,6 +15,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAttendantRouteImport } from './routes/_authenticated/attendant'
 import { Route as AuthenticatedFleetRouteImport } from './routes/_authenticated/fleet'
 import { Route as AuthenticatedParentRouteImport } from './routes/_authenticated/parent'
+import { Route as AuthenticatedRoutesRouteImport } from './routes/_authenticated/routes'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
 import { Route as AuthenticatedTrackStudentIdRouteImport } from './routes/_authenticated/track.$studentId'
 
@@ -47,6 +48,11 @@ const AuthenticatedParentRoute = AuthenticatedParentRouteImport.update({
   path: '/parent',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRoutesRoute = AuthenticatedRoutesRouteImport.update({
+  id: '/routes',
+  path: '/routes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedStudentsRoute = AuthenticatedStudentsRouteImport.update({
   id: '/students',
   path: '/students',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
+  '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/attendant': typeof AuthenticatedAttendantRoute
   '/fleet': typeof AuthenticatedFleetRoute
   '/parent': typeof AuthenticatedParentRoute
+  '/routes': typeof AuthenticatedRoutesRoute
   '/students': typeof AuthenticatedStudentsRoute
   '/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/_authenticated/attendant': typeof AuthenticatedAttendantRoute
   '/_authenticated/fleet': typeof AuthenticatedFleetRoute
   '/_authenticated/parent': typeof AuthenticatedParentRoute
+  '/_authenticated/routes': typeof AuthenticatedRoutesRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
   '/_authenticated/track/$studentId': typeof AuthenticatedTrackStudentIdRoute
 }
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/attendant'
     | '/fleet'
     | '/parent'
+    | '/routes'
     | '/students'
     | '/track/$studentId'
   fileRoutesByTo: FileRoutesByTo
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/attendant'
     | '/fleet'
     | '/parent'
+    | '/routes'
     | '/students'
     | '/track/$studentId'
   id:
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/_authenticated/attendant'
     | '/_authenticated/fleet'
     | '/_authenticated/parent'
+    | '/_authenticated/routes'
     | '/_authenticated/students'
     | '/_authenticated/track/$studentId'
   fileRoutesById: FileRoutesById
@@ -168,6 +180,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/routes': {
+      id: '/_authenticated/routes'
+      path: '/routes'
+      fullPath: '/routes'
+      preLoaderRoute: typeof AuthenticatedRoutesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/students': {
       id: '/_authenticated/students'
       path: '/students'
@@ -190,6 +209,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAttendantRoute: typeof AuthenticatedAttendantRoute
   AuthenticatedFleetRoute: typeof AuthenticatedFleetRoute
   AuthenticatedParentRoute: typeof AuthenticatedParentRoute
+  AuthenticatedRoutesRoute: typeof AuthenticatedRoutesRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
   AuthenticatedTrackStudentIdRoute: typeof AuthenticatedTrackStudentIdRoute
 }
@@ -199,6 +219,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAttendantRoute: AuthenticatedAttendantRoute,
   AuthenticatedFleetRoute: AuthenticatedFleetRoute,
   AuthenticatedParentRoute: AuthenticatedParentRoute,
+  AuthenticatedRoutesRoute: AuthenticatedRoutesRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
   AuthenticatedTrackStudentIdRoute: AuthenticatedTrackStudentIdRoute,
 }
