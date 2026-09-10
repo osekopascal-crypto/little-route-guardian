@@ -22,6 +22,9 @@ const navByRole = {
   admin: [
     { to: "/admin", label: "Overview", icon: LayoutDashboard },
     { to: "/students", label: "Pupils", icon: Users },
+    { to: "/fleet", label: "Fleet", icon: Bus },
+    { to: "/routes", label: "Routes", icon: RouteIcon },
+    { to: "/trips", label: "Trips", icon: CalendarClock },
   ],
   attendant: [{ to: "/attendant", label: "Today", icon: LayoutDashboard }],
   parent: [{ to: "/parent", label: "My children", icon: Users }],
