@@ -1,6 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, ShieldCheck, Users } from "lucide-react";
+import {
+  Bus,
+  CalendarClock,
+  LayoutDashboard,
+  LogOut,
+  Route as RouteIcon,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
 
 import { Brand } from "@/components/brand";
