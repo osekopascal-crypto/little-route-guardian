@@ -1,6 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, ShieldCheck, Users } from "lucide-react";
+import {
+  Bus,
+  CalendarClock,
+  LayoutDashboard,
+  LogOut,
+  Route as RouteIcon,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
 
 import { Brand } from "@/components/brand";
@@ -14,6 +22,9 @@ const navByRole = {
   admin: [
     { to: "/admin", label: "Overview", icon: LayoutDashboard },
     { to: "/students", label: "Pupils", icon: Users },
+    { to: "/fleet", label: "Fleet", icon: Bus },
+    { to: "/routes", label: "Routes", icon: RouteIcon },
+    { to: "/trips", label: "Trips", icon: CalendarClock },
   ],
   attendant: [{ to: "/attendant", label: "Today", icon: LayoutDashboard }],
   parent: [{ to: "/parent", label: "My children", icon: Users }],
