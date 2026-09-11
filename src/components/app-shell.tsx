@@ -5,6 +5,7 @@ import {
   CalendarClock,
   LayoutDashboard,
   LogOut,
+  Megaphone,
   Route as RouteIcon,
   ShieldCheck,
   Users,
@@ -13,6 +14,7 @@ import { useState } from "react";
 
 import { Brand } from "@/components/brand";
 import { Environment } from "@/components/environment";
+import { NotificationBell } from "@/components/notification-bell";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { roleLabel, useAuth } from "@/lib/auth";
