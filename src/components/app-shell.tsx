@@ -27,9 +27,16 @@ const navByRole = {
     { to: "/fleet", label: "Fleet", icon: Bus },
     { to: "/routes", label: "Routes", icon: RouteIcon },
     { to: "/trips", label: "Trips", icon: CalendarClock },
+    { to: "/notices", label: "Notices", icon: Megaphone },
   ],
-  attendant: [{ to: "/attendant", label: "Today", icon: LayoutDashboard }],
-  parent: [{ to: "/parent", label: "My children", icon: Users }],
+  attendant: [
+    { to: "/attendant", label: "Today", icon: LayoutDashboard },
+    { to: "/notices", label: "Notices", icon: Megaphone },
+  ],
+  parent: [
+    { to: "/parent", label: "My children", icon: Users },
+    { to: "/notices", label: "Notices", icon: Megaphone },
+  ],
 } as const;
 
 export function AppShell({
@@ -82,6 +89,7 @@ export function AppShell({
                 {profile ? roleLabel[profile.role] : ""}
               </p>
             </div>
+            <NotificationBell />
             <div
               aria-hidden="true"
               className="chip-gradient grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold"
