@@ -144,7 +144,15 @@ export function useDeleteInvoice() {
 export function useRecordPayment() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ values, recordedBy }: { values: PaymentInput; recordedBy: string }) => {
+    mutationFn: async ({
+      values,
+      recordedBy,
+      schoolId,
+    }: {
+      values: PaymentInput;
+      recordedBy: string;
+      schoolId: string;
+    }) => {
       const { error } = await supabase.from("fee_payments").insert({
         invoice_id: values.invoice_id,
         amount_kes: values.amount_kes,
@@ -152,8 +160,7 @@ export function useRecordPayment() {
         reference: values.reference?.trim() ? values.reference.trim() : null,
         paid_at: values.paid_at,
         recorded_by: recordedBy,
-        // school_id is set from the invoice by a database trigger.
-        school_id: "00000000-0000-0000-0000-000000000000",
+        school_id: schoolId,
       });
       if (error) throw new Error(friendly(error));
     },
