@@ -161,6 +161,118 @@ export type Database = {
           },
         ]
       }
+      fee_invoices: {
+        Row: {
+          amount_kes: number
+          created_at: string
+          due_date: string
+          id: string
+          notes: string | null
+          school_id: string
+          status: string
+          student_id: string
+          term_label: string
+          updated_at: string
+        }
+        Insert: {
+          amount_kes: number
+          created_at?: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          school_id: string
+          status?: string
+          student_id: string
+          term_label: string
+          updated_at?: string
+        }
+        Update: {
+          amount_kes?: number
+          created_at?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          school_id?: string
+          status?: string
+          student_id?: string
+          term_label?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fee_invoices_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fee_invoices_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fee_payments: {
+        Row: {
+          amount_kes: number
+          created_at: string
+          id: string
+          invoice_id: string
+          method: string
+          paid_at: string
+          recorded_by: string | null
+          reference: string | null
+          school_id: string
+        }
+        Insert: {
+          amount_kes: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          method?: string
+          paid_at?: string
+          recorded_by?: string | null
+          reference?: string | null
+          school_id: string
+        }
+        Update: {
+          amount_kes?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          method?: string
+          paid_at?: string
+          recorded_by?: string | null
+          reference?: string | null
+          school_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fee_payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "fee_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fee_payments_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fee_payments_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string
