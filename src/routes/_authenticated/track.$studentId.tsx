@@ -46,7 +46,7 @@ export const Route = createFileRoute("/_authenticated/track/$studentId")({
   ),
   errorComponent: ({ error }) => (
     <div role="alert" className="p-8 text-center">
-      {error.message}
+      {error instanceof Error ? error.message : "Something went wrong."}
     </div>
   ),
   notFoundComponent: () => <div className="p-8 text-center">We couldn't find that journey.</div>,

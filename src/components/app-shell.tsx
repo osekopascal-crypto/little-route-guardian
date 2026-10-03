@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   Megaphone,
+  Receipt,
   Route as RouteIcon,
   ShieldCheck,
   Users,
@@ -27,6 +28,7 @@ const navByRole = {
     { to: "/fleet", label: "Fleet", icon: Bus },
     { to: "/routes", label: "Routes", icon: RouteIcon },
     { to: "/trips", label: "Trips", icon: CalendarClock },
+    { to: "/fees", label: "Fees", icon: Receipt },
     { to: "/notices", label: "Notices", icon: Megaphone },
   ],
   attendant: [
@@ -35,6 +37,7 @@ const navByRole = {
   ],
   parent: [
     { to: "/parent", label: "My children", icon: Users },
+    { to: "/fees", label: "Fees", icon: Receipt },
     { to: "/notices", label: "Notices", icon: Megaphone },
   ],
 } as const;

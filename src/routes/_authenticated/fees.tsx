@@ -76,11 +76,11 @@ const emptyInvoice = (): InvoiceInput => ({
   status: "open",
 });
 
-const toneByState: Record<InvoiceSummary["state"], "primary" | "neutral" | "warning" | "danger"> = {
-  paid: "primary",
+const toneByState: Record<InvoiceSummary["state"], "success" | "neutral" | "warning" | "error"> = {
+  paid: "success",
   part: "warning",
   due: "neutral",
-  overdue: "danger",
+  overdue: "error",
   cancelled: "neutral",
 };
 
