@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Bus, Check, CircleSlash, MapPin, Navigation, Play, Square } from "lucide-react";
+import { Bus, Check, TriangleAlert, CircleSlash, MapPin, Navigation, Play, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { LiveMap } from "@/components/live-map";
+import { ReportIncidentDialog } from "@/components/report-incident-dialog";
 import { RoleGate } from "@/components/role-gate";
 import { SkeletonBlock } from "@/components/skeleton-block";
 import { StatusPill } from "@/components/status-pill";
@@ -58,6 +59,7 @@ function AttendantDashboard() {
   const updateTrip = useUpdateTrip();
   const share = useSharePosition();
   const [sharing, setSharing] = useState(false);
+  const [reporting, setReporting] = useState(false);
   const watchRef = useRef<number | null>(null);
 
   const stopList = stops.data ?? [];
@@ -97,7 +99,20 @@ function AttendantDashboard() {
       title={`${greeting()}, ${firstName(profile?.full_name)}`}
       greetingLine={school ? `You're on duty for ${school.name}.` : undefined}
       density="roomy"
+      actions={
+        <Button variant="outline" className="min-h-11 gap-2" onClick={() => setReporting(true)}>
+          <TriangleAlert className="size-4" aria-hidden="true" />
+          Report incident
+        </Button>
+      }
     >
+      <ReportIncidentDialog
+        open={reporting}
+        onOpenChange={setReporting}
+        tripId={t?.id ?? null}
+        busId={t?.bus_id ?? null}
+        pupils={rows.map((r) => ({ id: r.student_id, name: fullName(r.student) }))}
+      />
       {trip.isLoading ? (
         <SkeletonBlock label="Loading your trip…" lines={4} />
       ) : !t ? (
