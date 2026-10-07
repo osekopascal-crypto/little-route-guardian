@@ -5,7 +5,9 @@ import {
   CalendarClock,
   LayoutDashboard,
   LogOut,
+  BarChart3,
   Megaphone,
+  TriangleAlert,
   Receipt,
   Route as RouteIcon,
   ShieldCheck,
@@ -29,6 +31,8 @@ const navByRole = {
     { to: "/routes", label: "Routes", icon: RouteIcon },
     { to: "/trips", label: "Trips", icon: CalendarClock },
     { to: "/fees", label: "Fees", icon: Receipt },
+    { to: "/incidents", label: "Incidents", icon: TriangleAlert },
+    { to: "/reports", label: "Reports", icon: BarChart3 },
     { to: "/notices", label: "Notices", icon: Megaphone },
   ],
   attendant: [

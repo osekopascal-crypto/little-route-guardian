@@ -20,6 +20,8 @@ import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { firstName, greeting, useAuth } from "@/lib/auth";
+import { kindLabel, useIncidents } from "@/lib/incidents";
+import { timeAgo } from "@/lib/notifications";
 import { useTodayTrips } from "@/lib/tracking";
 import {
   fullName,
@@ -58,6 +60,8 @@ function AdminDashboard() {
   const links = useGuardianLinks();
   const parents = useParentOptions();
   const trips = useTodayTrips();
+  const incidents = useIncidents();
+  const openIncidents = (incidents.data ?? []).filter((i) => i.status === "open");
   const board = trips.data ?? [];
   const onRoad = board.filter((t) => t.status === "in_progress").length;
   const routeCount = new Set(board.map((t) => t.route_id)).size;
@@ -192,36 +196,41 @@ function AdminDashboard() {
           <div className="glass-elevated silk crest lift-3d edge-lit h-full p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="type-h2 text-chrome">Alerts</h2>
-              <StatusPill tone="warning">2 open</StatusPill>
+              <StatusPill tone={openIncidents.length ? "warning" : "success"}>
+                {openIncidents.length ? `${openIncidents.length} open` : "All clear"}
+              </StatusPill>
             </div>
+            {openIncidents.length === 0 ? (
+              <p className="type-body-sm mt-5 text-muted-foreground">
+                No open incidents. Reports from bus attendants will appear here.
+              </p>
+            ) : (
             <ul className="mt-5 space-y-2.5">
-              {[
-                {
-                  title: "Bus 03 running late",
-                  detail: "Kiambu Stage · 8 min behind",
-                  tone: "error" as const,
-                },
-                {
-                  title: "Road works ahead",
-                  detail: "Banana Junction · reported 15 min ago",
-                  tone: "warning" as const,
-                },
-              ].map((a) => (
-                <li key={a.title} className="glass-soft flex items-start gap-3 px-4 py-3.5">
+              {openIncidents.slice(0, 4).map((a) => (
+                <li key={a.id} className="glass-soft flex items-start gap-3 px-4 py-3.5">
                   <TriangleAlert
                     className={cn(
                       "mt-0.5 size-4 shrink-0",
-                      a.tone === "error" ? "text-destructive" : "text-warning",
+                      a.severity === "high" ? "text-destructive" : "text-warning",
                     )}
                     aria-hidden="true"
                   />
                   <div className="min-w-0">
-                    <p className="type-body-sm font-semibold text-foreground">{a.title}</p>
-                    <p className="type-meta text-muted-foreground">{a.detail}</p>
+                    <p className="type-body-sm font-semibold text-foreground">{kindLabel[a.kind]}</p>
+                    <p className="type-meta line-clamp-2 text-muted-foreground">
+                      {a.description} · {timeAgo(a.created_at)}
+                    </p>
                   </div>
                 </li>
               ))}
             </ul>
+            )}
+            <Button asChild variant="ghost" className="mt-3 gap-2">
+              <Link to="/incidents">
+                All incidents
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </Button>
             <div aria-hidden="true" className="route-line mt-6 w-full opacity-70" />
             <p className="type-caption mt-5 flex items-center gap-2 text-muted-foreground">
               <ShieldCheck className="size-4 shrink-0 text-accent" aria-hidden="true" />
