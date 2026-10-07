@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 
-export type NotificationKind = "info" | "ride" | "trip" | "announcement";
+export type NotificationKind = "info" | "ride" | "trip" | "announcement" | "payment" | "incident";
 
 export type AppNotification = {
   id: string;

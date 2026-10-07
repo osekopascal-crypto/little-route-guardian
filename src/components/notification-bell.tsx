@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, BusFront, Check, Megaphone, Navigation } from "lucide-react";
+import { Bell, Receipt, TriangleAlert, BusFront, Check, Megaphone, Navigation } from "lucide-react";
 import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,8 @@ const iconByKind: Record<NotificationKind, typeof Bell> = {
   ride: BusFront,
   trip: Navigation,
   announcement: Megaphone,
+  payment: Receipt,
+  incident: TriangleAlert,
 };
 
 export function NotificationBell() {

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Bell, BusFront, Check, Megaphone, Navigation, Pencil, Plus, Trash2 } from "lucide-react";
+import { Bell, Receipt, TriangleAlert, BusFront, Check, Megaphone, Navigation, Pencil, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -69,6 +69,8 @@ const iconByKind: Record<NotificationKind, typeof Bell> = {
   ride: BusFront,
   trip: Navigation,
   announcement: Megaphone,
+  payment: Receipt,
+  incident: TriangleAlert,
 };
 
 function NoticesPage() {
