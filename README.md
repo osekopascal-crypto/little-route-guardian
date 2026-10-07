@@ -1,110 +1,63 @@
-# School Transport SaaS — Phase 1 (Foundation)
+# School Transport SaaS
 
-A multi-tenant school transport platform. **Phase 1 delivers the secure
-foundation only**: backend, authentication, roles, school tenancy, protected
-routing, row level security, the design system and premium placeholder
-dashboards. Transport functionality (students, buses, routes, trips, boarding)
-belongs to later phases and is intentionally not built.
+A multi-tenant school transport platform for Kenyan schools. Each school is a
+tenant; every school-owned row carries `school_id` and is isolated by row level
+security (RLS). Powered by Pasco Labs.
 
-## Architecture
+## Roles and screens
 
-```
-PLATFORM
-└── SCHOOL (tenant)
-    ├── admin       → /admin
-    ├── attendant   → /attendant
-    └── parent      → /parent
-```
-
-Every school-owned record from Phase 2 onward carries `school_id`.
-A user belongs to exactly one school.
-
-### Stack
-
-React 19 · TypeScript · TanStack Start/Router · Tailwind v4 · Lovable Cloud
-(PostgreSQL + Auth + RLS).
-
-## Database (Phase 1)
-
-**`schools`** — `id`, `name`, `code` (unique), `address`, `phone`, `email`,
-`logo_url`, `status` (`active` | `inactive`), timestamps.
-
-**`profiles`** — `id` (→ auth user, cascade), `school_id` (→ schools, restrict),
-`full_name`, `phone`, `role` (`admin` | `attendant` | `parent`), `avatar_url`,
-`status` (`active` | `inactive`), timestamps.
-
-Role and status values are enforced by `CHECK` constraints — arbitrary roles are
-impossible at the database level.
-
-### Security helpers
-
-`public.get_user_school_id()` and `public.get_user_role()` are `STABLE
-SECURITY DEFINER` functions with an explicit `search_path = public, pg_temp`,
-`EXECUTE` revoked from `PUBLIC`/`anon` and granted only to `authenticated`. They
-derive the tenant and role from `auth.uid()` — never from the browser.
-
-### Row level security
-
-RLS is enabled on both tables.
-
-| Table | Rule |
+| Role | Screens |
 | --- | --- |
-| `schools` | read only where `id = get_user_school_id()` |
-| `profiles` | read own row, or rows in the same school |
-| `profiles` | update own row only; `school_id`, `role` and `status` are pinned |
+| School admin | Overview, Pupils, Fleet, Routes, Trips, Fees, Incidents, Reports, Notices |
+| Bus attendant | Today (run trip, board/drop/absent, share GPS, report incident), Notices |
+| Parent | My children, live bus tracking, Fees, Notices |
 
-`role`, `school_id` and `status` are additionally forced back to their previous
-values by the `profiles_protect_privileges` trigger whenever the request comes
-from the `authenticated` role, so privilege escalation fails even if a policy is
-later loosened. Profile and school creation/deletion are not granted to clients.
+## Features by phase
 
-## Authentication & routing
+1. **Foundation** — schools, profiles, auth, role routing, tenant RLS.
+2. **Pupils & families** — students, guardian links.
+3–4. **Design system** — ivory/amber glass, Sora + Manrope, localized data.
+5. **Live tracking** — buses, routes, stops, trips, manifests, GPS positions.
+6. **Fleet & scheduling** — bus/route/stop/trip admin and rosters.
+7. **Notifications** — in-app alerts and school notice board; automatic alerts
+   when a run starts/ends or a pupil boards, is dropped or marked absent.
+8. **Transport fees** — termly fees per pupil, M-Pesa/cash/bank payments
+   recorded by the office, balances, payment receipts sent to parents.
+9. **Reports & safety** — attendant incident reports (alerting admins, and
+   parents when their child is named or the incident is high severity),
+   admin resolution log, and reports for attendance, trip punctuality, fees and
+   safety with CSV downloads.
 
-- Email + password via Lovable Cloud Auth; sessions persist across refresh.
-- `src/lib/auth.tsx` exposes `loading` / `unauthenticated` / `ready` /
-  `incomplete` / `error` account states.
-- `/` is the sign-in screen; signed-in users are routed by role.
-- `src/routes/_authenticated/route.tsx` gates the protected subtree and redirects
-  to `/`; `RoleGate` additionally keeps each role inside its own dashboard.
-- Frontend guards are UX only. **RLS is the security boundary.**
-- Users with no profile, an inactive profile or an unusable role get a safe
-  account state — never admin access.
+## Security model
 
-## Design system
+- Helpers `get_user_school_id()`, `get_user_role()`, `is_my_child*()` are
+  `SECURITY DEFINER` and derive tenant/role from `auth.uid()` only.
+- Every table has RLS: admins manage their own school; attendants act on their
+  assigned trips and their own incident reports; parents read only data tied
+  to their linked children.
+- `profiles_protect_privileges` pins `role`, `school_id` and `status` against
+  self-escalation.
+- Notification fan-out triggers are `SECURITY DEFINER` with client `EXECUTE`
+  revoked; clients cannot insert notifications directly.
+- Frontend role gates are UX only. **RLS is the security boundary.**
 
-All colour, typography, spacing, radius, shadow and effect values are tokens in
-`src/styles.css` (obsidian base, midnight surfaces, crimson primary, cool accent,
-Manrope). Components use semantic tokens and shared utilities
-(`surface-1/2/3`, `surface-primary`, `atmosphere`, `route-motif`, `type-*`).
-Never hardcode colours in components.
+## Demo accounts (development only)
 
-## Development accounts
-
-Password for all demo accounts: `Passw0rd!Demo` (development only — never used in
-production, and no credentials are embedded in the shipped frontend).
+Password: `Passw0rd!Demo`
 
 | School | Role | Email |
 | --- | --- | --- |
-| ACK St. Peters Academy (`ACK-SPA`) | admin | `admin.a@demo.test` |
+| ACK St. Peters Academy | admin | `admin.a@demo.test` |
 | ACK St. Peters Academy | attendant | `attendant.a@demo.test` |
 | ACK St. Peters Academy | parent | `parent.a@demo.test` |
-| Demo Academy (`DEMO-001`) | admin | `admin.b@demo.test` |
+| Demo Academy | admin | `admin.b@demo.test` |
 
-Accounts were provisioned server-side with the service role key, which never
-reaches the browser.
+## Go-live checklist
 
-## Security tests (all expected to pass)
+1. Remove or replace demo accounts, pupils and Demo Academy.
+2. Create your real school, admin, attendants, parents and pupils.
+3. Set routes, stops, buses and the first trips.
+4. Publish.
 
-1. School isolation — School A user reading School B → 0 rows.
-2. Profile isolation — School A user reading School B profiles → 0 rows.
-3. Role escalation — `role = 'admin'` self-update → value unchanged.
-4. School escalation — `school_id` self-update → value unchanged.
-5. URL manipulation — attendant visiting `/admin` → redirected.
-6. Session persistence — refresh keeps the session.
-7. Logout — protected routes redirect to sign in.
-
-## Not in Phase 1
-
-Students, parent-child links, buses, routes, stops, assignments, trips, boarding/
-alighting, GPS, notifications, billing, analytics, reports, incidents, CSV import,
-offline sync, super-admin.
+Not included yet: SMS/email delivery and in-app M-Pesa checkout (both need an
+external provider account), and a platform-wide super-admin.
