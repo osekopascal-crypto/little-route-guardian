@@ -221,13 +221,14 @@ function AttendantDashboard() {
                       onClick={async () => {
                         await Promise.all(
                           rows.map((r) =>
-                            setStatus.mutateAsync({ id: r.id, status: "waiting" }),
+                            setStatus.mutateAsync({ id: r.id, status: "waiting", tripId: t.id }),
                           ),
                         );
                         updateTrip.mutate({
                           id: t.id,
                           patch: {
                             status: "planned",
+                            trip_date: new Date().toISOString().slice(0, 10),
                             started_at: null,
                             ended_at: null,
                             current_stop_id: null,
