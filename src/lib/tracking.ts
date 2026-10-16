@@ -276,7 +276,7 @@ export function useUpdateTrip() {
       patch,
     }: {
       id: string;
-      patch: Partial<Pick<Trip, "status" | "current_stop_id" | "started_at" | "ended_at">>;
+      patch: Partial<Pick<Trip, "status" | "trip_date" | "current_stop_id" | "started_at" | "ended_at">>;
     }) => {
       const { error } = await supabase.from("trips").update(patch).eq("id", id);
       if (error) throw new Error(friendly(error));
