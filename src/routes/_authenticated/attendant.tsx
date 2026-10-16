@@ -211,9 +211,34 @@ function AttendantDashboard() {
                     </Button>
                   </>
                 ) : (
-                  <p className="type-body-sm text-muted-foreground sm:col-span-2">
-                    This run is finished. Ended {clockTime(t.ended_at) ?? "—"}.
-                  </p>
+                  <div className="flex flex-col gap-3 sm:col-span-2">
+                    <p className="type-body-sm text-muted-foreground">
+                      This run is finished. Ended {clockTime(t.ended_at) ?? "—"}.
+                    </p>
+                    <Button
+                      className="type-button min-h-14 w-full rounded-xl"
+                      disabled={updateTrip.isPending || setStatus.isPending}
+                      onClick={async () => {
+                        await Promise.all(
+                          rows.map((r) =>
+                            setStatus.mutateAsync({ id: r.id, status: "waiting" }),
+                          ),
+                        );
+                        updateTrip.mutate({
+                          id: t.id,
+                          patch: {
+                            status: "planned",
+                            started_at: null,
+                            ended_at: null,
+                            current_stop_id: null,
+                          },
+                        });
+                      }}
+                    >
+                      <Play className="size-4" aria-hidden="true" />
+                      Run this trip again
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
