@@ -870,3 +870,5 @@
 .map-bus-label { position: absolute; top: 46px; white-space: nowrap; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 9999px; background: var(--foreground); color: var(--primary); }
 @keyframes map-pulse { from { transform: scale(0.6); opacity: 0.55; } to { transform: scale(2.2); opacity: 0; } }
 .map-tip { border-radius: 12px; border: 1px solid var(--border); font-family: inherit; }
+.leaflet-tile-pane { filter: grayscale(0.85) sepia(0.18) brightness(1.04) contrast(0.92); }
+.map-bus-core { color: var(--foreground); }
