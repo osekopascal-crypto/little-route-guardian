@@ -7,9 +7,9 @@ import type { BusPosition, RouteStop } from "@/lib/tracking";
 type Props = {
   stops: RouteStop[];
   positions: BusPosition[];
-  highlightStopId?: string | null;
+  highlightStopId?: string | null | undefined;
   busLabel: string;
-  stopInitials?: string;
+  stopInitials?: string | undefined;
 };
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
