@@ -872,3 +872,6 @@
 .map-tip { border-radius: 12px; border: 1px solid var(--border); font-family: inherit; }
 .leaflet-tile-pane { filter: grayscale(0.85) sepia(0.18) brightness(1.04) contrast(0.92); }
 .map-bus-core { color: var(--foreground); }
+.map-stop.is-passed { opacity: 0.45; border-color: var(--muted-foreground); }
+.map-stop.is-next { width: 20px; height: 20px; border-color: var(--primary); box-shadow: var(--shadow-glow-primary); }
+.map-stop.is-school { width: 20px; height: 20px; border-radius: 6px; background: var(--foreground); border-color: var(--primary); }

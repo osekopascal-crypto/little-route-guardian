@@ -245,6 +245,7 @@ function AttendantDashboard() {
             </div>
 
             <LiveMap
+              currentStopId={t.current_stop_id}
               stops={stopList}
               positions={positions.data ?? []}
               highlightStopId={t.current_stop_id}
