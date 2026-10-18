@@ -101,6 +101,7 @@ function TrackChild() {
         <div className="mx-auto grid max-w-4xl gap-5 lg:grid-cols-[1.3fr_1fr]">
           <div className="animate-rise space-y-5">
             <LiveMap
+              currentStopId={rider.trip.current_stop_id}
               stops={stopList}
               positions={trail}
               highlightStopId={target?.id ?? null}

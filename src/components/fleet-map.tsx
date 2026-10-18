@@ -29,6 +29,7 @@ export function FleetMap() {
   return (
     <div className="space-y-4">
       <LiveMap
+              currentStopId={focus?.current_stop_id ?? null}
         stops={stops.data ?? []}
         positions={positions.data ?? []}
         highlightStopId={focus?.current_stop_id ?? null}

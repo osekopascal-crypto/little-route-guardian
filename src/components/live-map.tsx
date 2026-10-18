@@ -20,6 +20,7 @@ export function LiveMap({
   stops,
   positions,
   highlightStopId,
+  currentStopId,
   busLabel = "Bus",
   className,
   live = true,
@@ -28,6 +29,7 @@ export function LiveMap({
   stops: RouteStop[];
   positions: BusPosition[];
   highlightStopId?: string | null;
+  currentStopId?: string | null;
   busLabel?: string;
   className?: string;
   live?: boolean;
@@ -50,6 +52,8 @@ export function LiveMap({
               stops={stops}
               positions={positions}
               highlightStopId={highlightStopId}
+              currentStopId={currentStopId}
+              live={live}
               busLabel={busLabel}
               stopInitials={stopInitials}
             />
