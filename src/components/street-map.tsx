@@ -7,9 +7,9 @@ import type { BusPosition, RouteStop } from "@/lib/tracking";
 type Props = {
   stops: RouteStop[];
   positions: BusPosition[];
-  highlightStopId?: string | null;
+  highlightStopId?: string | null | undefined;
   busLabel: string;
-  stopInitials?: string;
+  stopInitials?: string | undefined;
 };
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -27,9 +27,9 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
     if (!el.current || map.current) return;
     const m = L.map(el.current, { zoomControl: false, attributionControl: true, scrollWheelZoom: true });
     L.control.zoom({ position: "bottomright" }).addTo(m);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      attribution: '&copy; OpenStreetMap contributors',
     }).addTo(m);
     m.setView([-1.15, 36.822], 14);
     m.on("dragstart", () => setFollow(false));
@@ -92,7 +92,7 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
       return;
     }
     const heading = latest.heading ?? 0;
-    const html = `<div class="map-bus"><span class="map-bus-pulse"></span><span class="map-bus-arrow" style="transform:rotate(${heading}deg)"></span><span class="map-bus-core">🚌</span><span class="map-bus-label">${esc(busLabel)}</span></div>`;
+    const html = `<div class="map-bus"><span class="map-bus-pulse"></span><span class="map-bus-arrow" style="transform:rotate(${heading}deg)"></span><span class="map-bus-core"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 6v6M16 6v6M2 12h20M18 18h2a1 1 0 0 0 1-1V7a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v10a1 1 0 0 0 1 1h2"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/></svg></span><span class="map-bus-label">${esc(busLabel)}</span></div>`;
     const icon = L.divIcon({ html, className: "", iconSize: [44, 44], iconAnchor: [22, 22] });
     if (!busMarker.current) busMarker.current = L.marker([latest.lat, latest.lng], { icon, zIndexOffset: 1000 }).addTo(m);
     else busMarker.current.setLatLng([latest.lat, latest.lng]).setIcon(icon);
@@ -104,7 +104,7 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
   return (
     <div className="relative h-full w-full">
       <div ref={el} className="h-full w-full" />
-      <div className="absolute left-3 top-3 z-[500] flex flex-col gap-2">
+      <div className="absolute bottom-3 left-3 z-[500] flex flex-col gap-2">
         {mine && (
           <button
             type="button"
@@ -114,7 +114,7 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
               map.current?.flyTo([mine.lat, mine.lng], 17);
             }}
           >
-            🎯 My stop
+            My stop
           </button>
         )}
         {latest && (
@@ -127,7 +127,7 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
               map.current?.flyTo([latest.lat, latest.lng], 16);
             }}
           >
-            🚌 {follow ? "Following bus" : "Track bus"}
+            {follow ? "Following bus" : "Track bus"}
           </button>
         )}
         <button
@@ -139,7 +139,7 @@ export default function StreetMap({ stops, positions, highlightStopId, busLabel,
             if (pts.length) map.current?.flyToBounds(L.latLngBounds(pts), { padding: [40, 40] });
           }}
         >
-          🗺️ Whole route
+          Whole route
         </button>
       </div>
     </div>
