@@ -473,6 +473,11 @@ function StopDialog({
               className="min-h-11"
             />
           </div>
+          <StopLocator
+            onFound={(lat, lng, label) =>
+              setForm((f) => ({ ...f, lat, lng, name: f.name.trim() === "" && label ? label.split(",")[0]! : f.name }))
+            }
+          />
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="grid gap-2">
               <Label htmlFor="stop-seq">Order</Label>
