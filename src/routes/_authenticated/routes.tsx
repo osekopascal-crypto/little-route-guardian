@@ -581,7 +581,10 @@ function StopLocator({ onFound }: { onFound: (lat: number, lng: number, label: s
   }
 
   function here() {
-    if (!navigator.geolocation) return toast.error("This device can't share its location.");
+    if (!navigator.geolocation) {
+      toast.error("This device can't share its location.");
+      return;
+    }
     setBusy(true);
     navigator.geolocation.getCurrentPosition(
       (p) => {
