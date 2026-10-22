@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Clock, MapPin, Pencil, Plus, Route as RouteIcon, Trash2 } from "lucide-react";
+import { Clock, LocateFixed, MapPin, Pencil, Plus, Route as RouteIcon, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { resolveLocation } from "@/lib/locate.functions";
 
 import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
@@ -556,5 +558,73 @@ function StopDialog({
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function StopLocator({ onFound }: { onFound: (lat: number, lng: number, label: string | null) => void }) {
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const resolve = useServerFn(resolveLocation);
+
+  async function find() {
+    if (!text.trim()) return;
+    setBusy(true);
+    try {
+      const r = await resolve({ data: { text } });
+      onFound(r.lat, r.lng, r.label);
+      toast.success("Location found — check the pin, then save");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Couldn't find that place.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function here() {
+    if (!navigator.geolocation) return toast.error("This device can't share its location.");
+    setBusy(true);
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        setBusy(false);
+        onFound(Number(p.coords.latitude.toFixed(6)), Number(p.coords.longitude.toFixed(6)), null);
+        toast.success("Using where you're standing now");
+      },
+      () => {
+        setBusy(false);
+        toast.error("Location permission was refused.");
+      },
+      { enableHighAccuracy: true, timeout: 15000 },
+    );
+  }
+
+  return (
+    <div className="glass-soft grid gap-2 p-3">
+      <Label htmlFor="stop-find">Find the place</Label>
+      <p className="type-caption text-muted-foreground">
+        Paste a Google Maps link (Share → Copy link), or type a place name.
+      </p>
+      <div className="flex gap-2">
+        <Input
+          id="stop-find"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              void find();
+            }
+          }}
+          placeholder="https://maps.app.goo.gl/…"
+          className="min-h-11"
+        />
+        <Button type="button" variant="secondary" className="min-h-11" disabled={busy} onClick={() => void find()}>
+          {busy ? "…" : "Find"}
+        </Button>
+      </div>
+      <Button type="button" variant="ghost" className="min-h-11 justify-start gap-2" disabled={busy} onClick={here}>
+        <LocateFixed className="size-4" aria-hidden="true" />
+        I'm standing at this stop — use my location
+      </Button>
+    </div>
   );
 }
