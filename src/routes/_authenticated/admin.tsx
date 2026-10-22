@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/app-shell";
 import { FleetMap, UpcomingStops } from "@/components/fleet-map";
 import { KpiCard } from "@/components/kpi-card";
+import { SubscriptionCard } from "@/components/subscription-card";
 
 import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
@@ -131,6 +132,8 @@ function AdminDashboard() {
           />
         </div>
       </section>
+
+      <SubscriptionCard />
 
       <section className="mt-8 grid gap-4 lg:grid-cols-[1.5fr_1fr]" aria-label="Live fleet">
         <div className="animate-rise">
