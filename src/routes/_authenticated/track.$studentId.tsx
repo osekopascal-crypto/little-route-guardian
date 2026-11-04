@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Bus, Clock, MapPin, ShieldCheck } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
+import { ApproachAlert } from "@/components/approach-alert";
 import { EmptyState } from "@/components/empty-state";
 import { LiveMap } from "@/components/live-map";
 import { RoleGate } from "@/components/role-gate";
@@ -100,6 +101,14 @@ function TrackChild() {
       ) : (
         <div className="mx-auto grid max-w-4xl gap-5 lg:grid-cols-[1.3fr_1fr]">
           <div className="animate-rise space-y-5">
+            <ApproachAlert
+              tripId={rider.trip.id}
+              studentId={rider.student_id}
+              childName={rider.student.first_name}
+              stopName={myStop?.name ?? "your stop"}
+              eta={live && rider.status === "waiting" ? eta : null}
+              waiting={rider.status === "waiting"}
+            />
             <LiveMap
               currentStopId={rider.trip.current_stop_id}
               stops={stopList}

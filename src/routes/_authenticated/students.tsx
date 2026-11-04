@@ -19,6 +19,7 @@ import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
+import { ImportPupils } from "@/components/import-pupils";
 import { RoleGate } from "@/components/role-gate";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
@@ -173,10 +174,13 @@ function StudentsPage() {
       title="Pupil register"
       greetingLine={`Every pupil below belongs only to ${school?.name ?? "your school"}.`}
       actions={
-        <Button className="type-button min-h-11 gap-2" onClick={() => setEditing({})}>
-          <Plus className="size-4" aria-hidden="true" />
-          Add pupil
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <ImportPupils schoolId={school?.id ?? ""} />
+          <Button className="type-button min-h-11 gap-2" onClick={() => setEditing({})}>
+            <Plus className="size-4" aria-hidden="true" />
+            Add pupil
+          </Button>
+        </div>
       }
     >
       <section className="grid grid-cols-3 gap-3 sm:gap-4">
