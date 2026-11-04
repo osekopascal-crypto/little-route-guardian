@@ -186,6 +186,34 @@ function LoginPage() {
               )}
             </Button>
 
+            <div className="space-y-2 border-t border-hairline pt-4">
+              <p className="type-meta text-center text-muted-foreground">Quick demo sign-in</p>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  ["Admin", "admin.a@demo.test"],
+                  ["Attendant", "attendant.a@demo.test"],
+                  ["Parent", "parent.a@demo.test"],
+                ].map(([label, demo]) => (
+                  <Button
+                    key={demo}
+                    type="button"
+                    variant="outline"
+                    disabled={busy}
+                    className="type-button min-h-11 rounded-xl"
+                    onClick={async () => {
+                      setError(null);
+                      setSubmitting(true);
+                      const r = await signIn(demo, "Passw0rd!Demo");
+                      setSubmitting(false);
+                      if (r.error) setError(r.error);
+                    }}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             <p className="type-caption text-center text-muted-foreground">
               Need help? Contact your school administrator.
             </p>
