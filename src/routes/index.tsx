@@ -189,11 +189,11 @@ function LoginPage() {
             <div className="space-y-2 border-t border-hairline pt-4">
               <p className="type-meta text-center text-muted-foreground">Quick demo sign-in</p>
               <div className="grid grid-cols-3 gap-2">
-                {[
+                {([
                   ["Admin", "admin.a@demo.test"],
                   ["Attendant", "attendant.a@demo.test"],
                   ["Parent", "parent.a@demo.test"],
-                ].map(([label, demo = ""]) => (
+                ] as const).map(([label, demo]) => (
                   <Button
                     key={demo}
                     type="button"
