@@ -193,7 +193,7 @@ function LoginPage() {
                   ["Admin", "admin.a@demo.test"],
                   ["Attendant", "attendant.a@demo.test"],
                   ["Parent", "parent.a@demo.test"],
-                ].map(([label, demo]) => (
+                ].map(([label, demo = ""]) => (
                   <Button
                     key={demo}
                     type="button"
