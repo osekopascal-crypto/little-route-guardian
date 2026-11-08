@@ -34,6 +34,11 @@ export function parseCsv(text: string): string[][] {
   return rows;
 }
 
+/** Strip leading characters spreadsheets treat as formulas (=, +, -, @, tab, CR). */
+export function sanitizeCell(value: string): string {
+  return value.trim().replace(/^[=+\-@\t\r\s]+/, "").trim();
+}
+
 function downloadTemplate() {
   const body = `${HEADERS.join(",")}\nZawadi,Mwangi,ADM-1001,Grade 4,4 East,Ndumberi near the stadium,Pick at Sam Mali shop\n`;
   const url = URL.createObjectURL(new Blob([body], { type: "text/csv" }));
@@ -58,7 +63,8 @@ export function ImportPupils({ schoolId }: { schoolId: string }) {
       if (col("first_name") < 0 || col("last_name") < 0 || col("admission_no") < 0) {
         throw new Error("The sheet needs first_name, last_name and admission_no columns. Download the template.");
       }
-      const get = (r: string[], n: string) => (col(n) >= 0 ? (r[col(n)] ?? "").trim() || null : null);
+      const get = (r: string[], n: string) =>
+        col(n) >= 0 ? sanitizeCell(r[col(n)] ?? "") || null : null;
       const records = rows
         .map((r) => ({
           school_id: schoolId,

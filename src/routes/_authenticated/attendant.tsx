@@ -94,6 +94,41 @@ function AttendantDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sharing, t?.id, school?.id]);
 
+  // Keep the screen awake while sharing so the phone keeps sending GPS.
+  const [awake, setAwake] = useState<"on" | "off" | "unsupported">("off");
+  useEffect(() => {
+    if (!sharing) return;
+    type WakeLockLike = { release: () => Promise<void>; addEventListener: (e: string, f: () => void) => void };
+    const wl = (navigator as unknown as { wakeLock?: { request: (t: "screen") => Promise<WakeLockLike> } }).wakeLock;
+    if (!wl) {
+      setAwake("unsupported");
+      return;
+    }
+    let lock: WakeLockLike | null = null;
+    let cancelled = false;
+    const acquire = async () => {
+      try {
+        lock = await wl.request("screen");
+        if (cancelled) return void lock.release();
+        setAwake("on");
+        lock.addEventListener("release", () => setAwake("off"));
+      } catch {
+        setAwake("off");
+      }
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void acquire();
+    };
+    void acquire();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      cancelled = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      void lock?.release().catch(() => {});
+      setAwake("off");
+    };
+  }, [sharing]);
+
   return (
     <AppShell
       title={`${greeting()}, ${firstName(profile?.full_name)}`}
@@ -209,6 +244,15 @@ function AttendantDashboard() {
                       <MapPin className="size-4" aria-hidden="true" />
                       {sharing ? "Sharing bus location — tap to stop" : "Share this bus's location"}
                     </Button>
+                    {sharing && (
+                      <p role="status" className="type-body-sm text-muted-foreground sm:col-span-2">
+                        {awake === "on"
+                          ? "Screen will stay awake while sharing."
+                          : awake === "unsupported"
+                            ? "This phone can't keep the screen awake — please set screen timeout to its longest."
+                            : "Keep this screen open so the bus location keeps updating."}
+                      </p>
+                    )}
                   </>
                 ) : (
                   <div className="flex flex-col gap-3 sm:col-span-2">
