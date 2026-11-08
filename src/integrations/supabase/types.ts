@@ -273,6 +273,48 @@ export type Database = {
           },
         ]
       }
+      guardian_consents: {
+        Row: {
+          consent_given_at: string
+          consent_version: string
+          guardian_id: string
+          id: string
+          school_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          consent_given_at?: string
+          consent_version: string
+          guardian_id: string
+          id?: string
+          school_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          consent_given_at?: string
+          consent_version?: string
+          guardian_id?: string
+          id?: string
+          school_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guardian_consents_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guardian_consents_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           bus_id: string | null
