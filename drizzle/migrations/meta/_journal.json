@@ -15,6 +15,13 @@
       "when": 1791191188447,
       "tag": "0001_create_incidents",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794168865432,
+      "tag": "0002_restrict_parent_profile_visibility",
+      "breakpoints": true
     }
   ]
 }
