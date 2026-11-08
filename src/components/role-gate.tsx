@@ -3,6 +3,7 @@ import { AlertTriangle, Loader2, ShieldX } from "lucide-react";
 import { useEffect } from "react";
 
 import { Brand } from "@/components/brand";
+import { ConsentGate } from "@/components/consent-gate";
 import { Button } from "@/components/ui/button";
 import { type AppRole, roleHome, useAuth } from "@/lib/auth";
 
@@ -100,6 +101,8 @@ export function RoleGate({ allow, children }: { allow: AppRole; children: React.
       </CenteredPanel>
     );
   }
+
+  if (allow === "parent") return <ConsentGate>{children}</ConsentGate>;
 
   return <>{children}</>;
 }
