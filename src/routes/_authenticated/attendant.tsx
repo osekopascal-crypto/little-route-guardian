@@ -244,6 +244,15 @@ function AttendantDashboard() {
                       <MapPin className="size-4" aria-hidden="true" />
                       {sharing ? "Sharing bus location — tap to stop" : "Share this bus's location"}
                     </Button>
+                    {sharing && (
+                      <p role="status" className="type-body-sm text-muted-foreground sm:col-span-2">
+                        {awake === "on"
+                          ? "Screen will stay awake while sharing."
+                          : awake === "unsupported"
+                            ? "This phone can't keep the screen awake — please set screen timeout to its longest."
+                            : "Keep this screen open so the bus location keeps updating."}
+                      </p>
+                    )}
                   </>
                 ) : (
                   <div className="flex flex-col gap-3 sm:col-span-2">
