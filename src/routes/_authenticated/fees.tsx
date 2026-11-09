@@ -473,6 +473,31 @@ function InvoiceDialog({
                   setValues((p) => ({ ...p, amount_kes: Number(e.target.value) || 0 }))
                 }
               />
+              <div className="flex flex-wrap gap-1.5" aria-label="Pickup distance zones">
+                {[
+                  { label: "Zone A · 0–3 km", kes: 3800 },
+                  { label: "Zone B · 3–7 km", kes: 4800 },
+                  { label: "Zone C · 7–12 km", kes: 5800 },
+                  { label: "Zone D · 12 km+", kes: 6800 },
+                ].map((z) => (
+                  <Button
+                    key={z.label}
+                    type="button"
+                    size="sm"
+                    variant={values.amount_kes === z.kes ? "default" : "outline"}
+                    className="h-7 px-2 text-xs"
+                    onClick={() =>
+                      setValues((p) => ({
+                        ...p,
+                        amount_kes: z.kes,
+                        notes: `${z.label} — fee set by distance from home to school.`,
+                      }))
+                    }
+                  >
+                    {z.label}
+                  </Button>
+                ))}
+              </div>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="fee-due">Due date</Label>
