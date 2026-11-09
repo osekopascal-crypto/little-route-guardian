@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Banknote, Pencil, Plus, Receipt, Trash2, Wallet } from "lucide-react";
+import { Banknote, Pencil, Plus, Printer, Receipt, Trash2, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
 import { EmptyState } from "@/components/empty-state";
 import { StatusPill } from "@/components/status-pill";
+import { ReceiptVoucher } from "@/components/receipt-voucher";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,6 +39,7 @@ import {
   useRecordPayment,
   useSaveInvoice,
   type FeeInvoice,
+  type FeePayment,
   type InvoiceInput,
   type InvoiceSummary,
   type PaymentMethod,
@@ -97,6 +99,7 @@ function FeesPage() {
 
   const [invoiceDialog, setInvoiceDialog] = useState<{ invoice?: FeeInvoice } | null>(null);
   const [payDialog, setPayDialog] = useState<InvoiceSummary | null>(null);
+  const [receipt, setReceipt] = useState<{ payment: FeePayment; invoice: FeeInvoice } | null>(null);
 
   const nameById = useMemo(() => {
     const map = new Map<string, string>();
@@ -253,11 +256,20 @@ function FeesPage() {
                               {formatKes(p.amount_kes)} · {methodLabel[p.method]}
                               {p.reference ? ` · ${p.reference}` : ""}
                             </span>
-                            <span>
+                            <span className="flex items-center gap-2">
                               {new Date(p.paid_at).toLocaleDateString("en-KE", {
                                 day: "numeric",
                                 month: "short",
                               })}
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 gap-1 px-2"
+                                onClick={() => setReceipt({ payment: p, invoice: inv })}
+                              >
+                                <Printer className="size-3.5" aria-hidden="true" />
+                                Receipt
+                              </Button>
                             </span>
                           </li>
                         ))}
@@ -309,6 +321,25 @@ function FeesPage() {
           </ul>
         )}
       </section>
+
+      {receipt && school && (() => {
+        const st = (students.data ?? []).find((x) => x.id === receipt.invoice.student_id);
+        const sc = school as unknown as { name: string; address?: string | null; phone?: string | null };
+        return (
+          <ReceiptVoucher
+            payment={receipt.payment}
+            invoice={receipt.invoice}
+            allPayments={payments.data ?? []}
+            school={sc}
+            pupil={{
+              name: nameById.get(receipt.invoice.student_id) ?? "Pupil",
+              admission_no: st?.admission_no,
+              class_label: [st?.grade_level, st?.class_name].filter(Boolean).join(" ") || null,
+            }}
+            onClose={() => setReceipt(null)}
+          />
+        );
+      })()}
 
       {isAdmin && invoiceDialog && (
         <InvoiceDialog
