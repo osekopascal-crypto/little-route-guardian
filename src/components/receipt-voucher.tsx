@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { formatKes, methodLabel, type FeeInvoice, type FeePayment } from "@/lib/fees";
 
 type SchoolInfo = { name: string; code?: string; address?: string | null; phone?: string | null };
-type PupilInfo = { name: string; admission_no?: string; class_label?: string | null };
+type PupilInfo = { name: string; admission_no?: string | undefined; class_label?: string | null };
 
 export function receiptNumber(p: FeePayment) {
   const year = new Date(p.paid_at).getFullYear();
