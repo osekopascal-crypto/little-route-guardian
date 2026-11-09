@@ -1,5 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertCircle, ArrowRight, Loader2, Lock, Mail, ShieldCheck } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowRight,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  Presentation,
+  ShieldCheck,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Brand } from "@/components/brand";
@@ -35,6 +46,8 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [presenter, setPresenter] = useState(false);
 
   // Session restoration: an already-signed-in visitor goes straight to their area.
   useEffect(() => {
@@ -147,14 +160,22 @@ function LoginPage() {
                 />
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="min-h-12 rounded-xl bg-surface-1/70 pl-11 transition-shadow duration-200 focus-visible:shadow-glow-primary"
+                  className="min-h-12 rounded-xl bg-surface-1/70 pl-11 pr-11 transition-shadow duration-200 focus-visible:shadow-glow-primary"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-2 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-lg text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
               </div>
             </div>
 
@@ -186,8 +207,32 @@ function LoginPage() {
               )}
             </Button>
 
-            <div className="space-y-2 border-t border-hairline pt-4">
-              <p className="type-meta text-center text-muted-foreground">Quick demo sign-in</p>
+            <p className="type-caption text-center text-muted-foreground">
+              Need help? Contact your school administrator.
+            </p>
+          </form>
+
+          <div className="mt-5 text-center">
+            <button
+              type="button"
+              aria-expanded={presenter}
+              onClick={() => setPresenter((v) => !v)}
+              className="type-meta inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-muted-foreground/70 transition-colors hover:text-foreground"
+            >
+              <Presentation className="size-3.5" aria-hidden="true" />
+              Presenter mode
+              <ChevronDown
+                className={`size-3.5 transition-transform ${presenter ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+
+          {presenter && (
+            <div className="glass-soft silk animate-rise mt-3 space-y-2 p-4">
+              <p className="type-caption text-center text-muted-foreground">
+                Demonstration school · sample data only
+              </p>
               <div className="grid grid-cols-3 gap-2">
                 {([
                   ["Admin", "admin.a@demo.test"],
@@ -213,11 +258,7 @@ function LoginPage() {
                 ))}
               </div>
             </div>
-
-            <p className="type-caption text-center text-muted-foreground">
-              Need help? Contact your school administrator.
-            </p>
-          </form>
+          )}
 
           <p className="type-meta mt-6 flex items-center justify-center gap-2 text-center text-muted-foreground lg:hidden">
             Powered by{" "}
