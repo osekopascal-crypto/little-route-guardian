@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 /** Boarding taps saved on this phone while there is no signal, synced when it returns. */
 export type QueuedRiderUpdate = {
   id: string;
-  patch: Record<string, string>;
+  patch: { status?: string; boarded_at?: string; dropped_at?: string };
   queuedAt: string;
 };
 
