@@ -25,6 +25,9 @@ import {
   useUpdateTrip,
 } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
+import { useOfflineQueue } from "@/lib/offline-queue";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/attendant")({
   head: () => ({
@@ -61,6 +64,11 @@ function AttendantDashboard() {
   const [sharing, setSharing] = useState(false);
   const [reporting, setReporting] = useState(false);
   const watchRef = useRef<number | null>(null);
+  const qc = useQueryClient();
+  const offline = useOfflineQueue((n) => {
+    toast.success(`Signal back — ${n} boarding ${n === 1 ? "update" : "updates"} synced.`);
+    void qc.invalidateQueries();
+  });
 
   const stopList = stops.data ?? [];
   const rows = manifest.data ?? [];
@@ -141,6 +149,17 @@ function AttendantDashboard() {
         </Button>
       }
     >
+      {(!offline.online || offline.pending > 0) && (
+        <div
+          role="status"
+          className="glass-elevated mb-4 flex items-center gap-2 rounded-2xl border border-primary/40 px-4 py-3 type-body-sm"
+        >
+          <CircleSlash className="size-4 text-primary" aria-hidden="true" />
+          {!offline.online
+            ? `No signal — keep marking pupils. ${offline.pending} saved on this phone, will send when signal returns.`
+            : `Sending ${offline.pending} saved ${offline.pending === 1 ? "update" : "updates"}…`}
+        </div>
+      )}
       <ReportIncidentDialog
         open={reporting}
         onOpenChange={setReporting}
