@@ -362,6 +362,58 @@ export function useAddRider() {
   });
 }
 
+/** Copy riders from the most recent earlier trip on the same route into this trip. */
+export function useLoadLastRoster() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      tripId,
+      routeId,
+      schoolId,
+    }: {
+      tripId: string;
+      routeId: string;
+      schoolId: string;
+    }): Promise<number> => {
+      const { data: prev, error: e1 } = await supabase
+        .from("trips")
+        .select("id, trip_students(student_id, stop_id)")
+        .eq("route_id", routeId)
+        .neq("id", tripId)
+        .order("trip_date", { ascending: false })
+        .order("created_at", { ascending: false })
+        .limit(10);
+      if (e1) throw new Error(friendly(e1));
+      type Prev = { id: string; trip_students: { student_id: string; stop_id: string | null }[] };
+      const source = ((prev ?? []) as unknown as Prev[]).find((t) => t.trip_students.length > 0);
+      if (!source) throw new Error("No earlier run on this route has pupils yet. Add them once and next time it's one tap.");
+      const { data: cur, error: e2 } = await supabase
+        .from("trip_students")
+        .select("student_id")
+        .eq("trip_id", tripId);
+      if (e2) throw new Error(friendly(e2));
+      const have = new Set((cur ?? []).map((r) => r.student_id));
+      const rows = source.trip_students
+        .filter((r) => !have.has(r.student_id))
+        .map((r) => ({
+          trip_id: tripId,
+          student_id: r.student_id,
+          stop_id: r.stop_id,
+          school_id: schoolId,
+          status: "waiting",
+        }));
+      if (rows.length === 0) return 0;
+      const { error } = await supabase.from("trip_students").insert(rows);
+      if (error) throw new Error(friendly(error));
+      return rows.length;
+    },
+    onSuccess: (_d, vars) => {
+      void qc.invalidateQueries({ queryKey: fleetKeys.roster(vars.tripId) });
+      void qc.invalidateQueries({ queryKey: trackingKeys.todayTrips });
+    },
+  });
+}
+
 export function useRemoveRider() {
   const qc = useQueryClient();
   return useMutation({

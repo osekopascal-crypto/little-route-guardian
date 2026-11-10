@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Bus, CalendarClock, Pencil, Plus, Trash2, UserPlus, Users, X } from "lucide-react";
+import { Bus, CalendarClock, ListChecks, Pencil, Plus, Trash2, UserPlus, Users, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -31,6 +31,7 @@ import {
   directionLabel,
   todayISO,
   useAddRider,
+  useLoadLastRoster,
   useAttendantOptions,
   useBuses,
   useDeleteTrip,
@@ -436,6 +437,16 @@ function RosterDialog({
   const stops = useStops(trip.route_id);
   const add = useAddRider();
   const remove = useRemoveRider();
+  const loadLast = useLoadLastRoster();
+
+  async function handleLoadLast() {
+    try {
+      const n = await loadLast.mutateAsync({ tripId: trip.id, routeId: trip.route_id, schoolId });
+      toast.success(n === 0 ? "Everyone from the last run is already here" : `${n} pupils loaded from the last run`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Couldn't load the usual pupils.");
+    }
+  }
 
   const [studentId, setStudentId] = useState("");
   const [stopId, setStopId] = useState(NONE);
@@ -482,6 +493,16 @@ function RosterDialog({
         </DialogHeader>
 
         <div className="grid gap-3">
+          <Button
+            type="button"
+            variant="secondary"
+            className="min-h-11"
+            onClick={handleLoadLast}
+            disabled={loadLast.isPending || !schoolId}
+          >
+            <ListChecks className="h-4 w-4" />
+            {loadLast.isPending ? "Loading pupils…" : "Load usual pupils from last run"}
+          </Button>
           <div className="grid gap-3 sm:grid-cols-[1.2fr_1fr_auto] sm:items-end">
             <div className="grid gap-2">
               <Label htmlFor="rider">Pupil</Label>
