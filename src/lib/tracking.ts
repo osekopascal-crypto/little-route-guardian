@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
+import { enqueue, isNetworkError } from "@/lib/offline-queue";
 import type { Student } from "@/lib/students";
 
 export type TripDirection = "to_school" | "from_school";
@@ -247,6 +248,7 @@ export function useSetRiderStatus() {
     mutationFn: async ({
       id,
       status,
+      tripId,
     }: {
       id: string;
       status: RiderStatus;
@@ -258,10 +260,28 @@ export function useSetRiderStatus() {
         ...(status === "on_board" ? { boarded_at: now } : {}),
         ...(status === "dropped" ? { dropped_at: now } : {}),
       };
-      const { error } = await supabase.from("trip_students").update(patch).eq("id", id);
-      if (error) throw new Error(friendly(error));
+      const queueIt = () => {
+        enqueue({ id, patch, queuedAt: now });
+        qc.setQueryData<ManifestRow[]>(trackingKeys.manifest(tripId), (rows) =>
+          rows?.map((r) => (r.id === id ? { ...r, ...patch } : r)),
+        );
+        return { queued: true };
+      };
+      if (typeof navigator !== "undefined" && !navigator.onLine) return queueIt();
+      try {
+        const { error } = await supabase.from("trip_students").update(patch).eq("id", id);
+        if (error) {
+          if (isNetworkError(error)) return queueIt();
+          throw new Error(friendly(error));
+        }
+      } catch (e) {
+        if (isNetworkError(e)) return queueIt();
+        throw e;
+      }
+      return { queued: false };
     },
-    onSuccess: (_d, vars) => {
+    onSuccess: (res, vars) => {
+      if (res?.queued) return;
       void qc.invalidateQueries({ queryKey: trackingKeys.manifest(vars.tripId) });
       void qc.invalidateQueries({ queryKey: trackingKeys.todayTrips });
     },
