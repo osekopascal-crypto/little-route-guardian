@@ -29,6 +29,13 @@
       "when": 1794169163001,
       "tag": "0003_guardian_consents",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794591201694,
+      "tag": "0004_scope_incident_alerts_to_school",
+      "breakpoints": true
     }
   ]
 }
