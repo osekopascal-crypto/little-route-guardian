@@ -66,6 +66,7 @@ export type Rider = {
   status: RiderStatus;
   boarded_at: string | null;
   dropped_at: string | null;
+  parent_absent_at?: string | null;
   student: Student;
   stop: RouteStop | null;
   trip: Trip;
@@ -165,6 +166,7 @@ export type ManifestRow = {
   status: RiderStatus;
   boarded_at: string | null;
   dropped_at: string | null;
+  parent_absent_at?: string | null;
   student: Student;
   stop: RouteStop | null;
 };
@@ -178,7 +180,7 @@ export function useTripManifest(tripId: string | undefined) {
       const { data, error } = await supabase
         .from("trip_students")
         .select(
-          `id, student_id, stop_id, status, boarded_at, dropped_at,
+          `id, student_id, stop_id, status, boarded_at, dropped_at, parent_absent_at,
            student:students(*), stop:route_stops(${STOP_SELECT})`,
         )
         .eq("trip_id", tripId!);
@@ -408,4 +410,17 @@ export function shortTime(value: string | null | undefined) {
   const date = new Date();
   date.setHours(Number(h), Number(m), 0, 0);
   return date.toLocaleTimeString("en-KE", { hour: "numeric", minute: "2-digit" });
+}
+
+/** Parent tells the bus their child is not riding today (today's waiting seats only). */
+export function useMarkNotRiding() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (studentId: string) => {
+      const { data, error } = await supabase.rpc("mark_not_riding_today", { _student_id: studentId });
+      if (error) throw error;
+      return data as number;
+    },
+    onSuccess: () => void qc.invalidateQueries(),
+  });
 }

@@ -719,6 +719,9 @@ export type Database = {
           first_name: string
           gender: string | null
           grade_level: string | null
+          guardian_name: string | null
+          guardian_phone: string | null
+          guardian_relationship: string | null
           home_address: string | null
           id: string
           last_name: string
@@ -735,6 +738,9 @@ export type Database = {
           first_name: string
           gender?: string | null
           grade_level?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relationship?: string | null
           home_address?: string | null
           id?: string
           last_name: string
@@ -751,6 +757,9 @@ export type Database = {
           first_name?: string
           gender?: string | null
           grade_level?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relationship?: string | null
           home_address?: string | null
           id?: string
           last_name?: string
@@ -775,6 +784,7 @@ export type Database = {
           created_at: string
           dropped_at: string | null
           id: string
+          parent_absent_at: string | null
           school_id: string
           status: string
           stop_id: string | null
@@ -787,6 +797,7 @@ export type Database = {
           created_at?: string
           dropped_at?: string | null
           id?: string
+          parent_absent_at?: string | null
           school_id: string
           status?: string
           stop_id?: string | null
@@ -799,6 +810,7 @@ export type Database = {
           created_at?: string
           dropped_at?: string | null
           id?: string
+          parent_absent_at?: string | null
           school_id?: string
           status?: string
           stop_id?: string | null
@@ -932,6 +944,7 @@ export type Database = {
       is_my_child_bus: { Args: { _bus_id: string }; Returns: boolean }
       is_my_child_route: { Args: { _route_id: string }; Returns: boolean }
       is_my_child_trip: { Args: { _trip_id: string }; Returns: boolean }
+      mark_not_riding_today: { Args: { _student_id: string }; Returns: number }
     }
     Enums: {
       [_ in never]: never

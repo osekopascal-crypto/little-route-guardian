@@ -9,7 +9,8 @@ import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
 import { firstName, useAuth } from "@/lib/auth";
 import { ageFrom, fullName, initialsOf, relationshipLabel, useMyChildren } from "@/lib/students";
-import { journeyPosition, riderStatusLabel, useMyRiders, type Rider } from "@/lib/tracking";
+import { toast } from "sonner";
+import { journeyPosition, riderStatusLabel, useMarkNotRiding, useMyRiders, type Rider } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/parent")({
@@ -95,6 +96,8 @@ function ParentDashboard() {
   const children = useMyChildren();
   const riders = useMyRiders();
   const list = children.data ?? [];
+  const notRiding = useMarkNotRiding();
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Nairobi" });
 
   const latestFor = (studentId: string): Rider | undefined =>
     (riders.data ?? []).find((r) => r.student_id === studentId);
@@ -171,6 +174,26 @@ function ParentDashboard() {
                         <StatusPill tone="success">Live</StatusPill>
                       )}
                     </div>
+
+                    {rider?.status === "waiting" && rider.trip.trip_date === today && rider.trip.status !== "completed" && (
+                      <Button
+                        variant="outline"
+                        className="type-button mt-5 min-h-12 w-full rounded-xl"
+                        disabled={notRiding.isPending}
+                        onClick={() => {
+                          if (!window.confirm(`Let the bus know ${link.student.first_name} isn't riding today?`)) return;
+                          notRiding.mutate(link.student_id, {
+                            onSuccess: (n) =>
+                              n
+                                ? toast.success("The attendant knows — the bus won't wait at your gate today.")
+                                : toast.info("Nothing to change — your child isn't on a waiting run right now."),
+                            onError: () => toast.error("We couldn't send that. Please try again."),
+                          });
+                        }}
+                      >
+                        Not riding today
+                      </Button>
+                    )}
 
                     {rider && (
                       <Button asChild className="type-button mt-5 min-h-12 w-full rounded-xl">

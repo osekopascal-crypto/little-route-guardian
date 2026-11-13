@@ -36,6 +36,13 @@
       "when": 1794591201694,
       "tag": "0004_scope_incident_alerts_to_school",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794592573460,
+      "tag": "0005_guardian_contacts_and_not_riding",
+      "breakpoints": true
     }
   ]
 }

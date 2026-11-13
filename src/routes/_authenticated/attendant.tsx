@@ -375,7 +375,7 @@ function AttendantDashboard() {
                             </span>
                           </span>
                           <span className="type-meta shrink-0 text-right text-muted-foreground">
-                            {on ? "On board" : done ? "Dropped" : r.status === "absent" ? "Absent" : "Waiting"}
+                            {on ? "On board" : done ? "Dropped" : r.status === "absent" ? (r.parent_absent_at ? "Parent: not riding today" : "Absent") : "Waiting"}
                           </span>
                         </button>
                         <Button
